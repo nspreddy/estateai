@@ -1,0 +1,25 @@
+
+apiVersion: apps/v1beta2 # for versions before 1.8.0 use apps/v1beta1
+kind: Deployment
+metadata:
+  name: elkkibana
+  labels:
+    app: elkkibana
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: elkkibana
+  template:
+    metadata:
+      labels:
+        app: elkkibana
+    spec:
+      containers:
+       - name: elkkibana
+         image: docker.elastic.co/kibana/kibana:6.0.1
+         ports:
+          - containerPort: 5601
+         env:
+          - name: ELASTICSEARCH_URL
+            value: http://10.0.0.163:9200

@@ -1,0 +1,24 @@
+
+apiVersion: apps/v1beta1 # for versions before 1.8.0 use apps/v1beta1
+kind: Deployment
+metadata:
+  name: skagitcrawler
+  labels:
+    app: skagitcrawler
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: skagitcrawler
+  template:
+    metadata:
+      labels:
+        app: skagitcrawler
+    spec:
+      containers:
+       - name: skagitcrawler
+         image: docker.io/nagareddy/estateai:nagareddy.reddy-D-201712032309
+         command: ["/app/bin/estateAIApp"]
+         args: ["--config=/app/bin/estateskagit.yaml"]
+         ports:
+           - containerPort: 8080

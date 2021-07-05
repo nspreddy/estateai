@@ -1,0 +1,13 @@
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: elkesservice
+spec:
+  selector:
+    app: elkes
+  ports:
+  - protocol: TCP
+    name: esserviceport
+    port: 9200
+    targetPort: 9200

@@ -1,0 +1,4 @@
+
+alias mstart='sudo minikube start --vm-driver=none'
+alias mstop='sudo minikube stop'
+alias kc='kubectl'

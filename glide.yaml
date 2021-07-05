@@ -1,0 +1,23 @@
+package: nrideas.visualstudio.com/EstateAI
+import:
+- package: github.com/PuerkitoBio/goquery
+  version: v1.1.0
+- package: github.com/ghodss/yaml
+  version: v1.0.0
+- package: github.com/go-sql-driver/mysql
+  version: v1.3
+- package: github.com/golang/glog
+- package: github.com/gorilla/mux
+  version: v1.6.0
+- package: golang.org/x/net
+  subpackages:
+  - context
+  - html
+- package: golang.org/x/oauth2
+  subpackages:
+  - google
+  - jwt
+testImport:
+- package: google.golang.org/api
+  subpackages:
+  - sheets/v4

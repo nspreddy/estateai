@@ -1,0 +1,6 @@
+ samplePR1:
+    IsLatLong: true
+    Lat: 23.45
+    Long: 34.45
+    Address: ""
+    Radius: 2

@@ -1,0 +1,78 @@
+# shell variables
+PS1="\n$PS1 "
+PS2=": "
+
+#ENV VARS
+export GOPATH=~/repos/GoWork
+export JAVA_HOME=$(/usr/libexec/java_home)
+export MVN_BIN=~/DevTools/apache-maven-3.5.0/bin
+
+#PATH 
+export PATH=$PATH:/usr/local/bin:$MVN_BIN:$HOME/bin:$HOME/.local/bin
+export PATH="/usr/local/opt/python/libexec/bin:$PATH"
+
+# cmd/utility aliases
+alias l="ls -l"
+alias dir="ls -l"
+alias cls="clear"
+alias ll="ls -al"
+alias kubemon='python /Users/nkatta/work/src/git.soma.salesforce.com/sam/sam/test/utils/kubemon/kubemon'
+alias netsoft='cd /Users/nkatta/work/src/git.soma.salesforce.com/Network-Software/'
+alias vi="vim"
+
+# Git repos
+alias rep="cd ~/repos"
+alias dev="cd ~/repos/DevRepo_NR"
+alias dev="cd ~/repos/GoWork/src/git.soma.salesforce.com/DevRepo_NR"
+alias estates="cd ~/repos/estates"
+alias comp="cd ~/repos/IaaSCompute/garage/computeHost/src"
+alias github="cd ~/repos/github"
+
+# go related aliases 
+alias gobin="cd ~/repos/GoWork/bin"
+alias gosrc="cd ~/repos/GoWork/src"
+alias gopkg="cd ~/repos/GoWork/pkg"
+
+alias gowork="cd ~/repos/GoWork/src/git.soma.salesforce.com"
+alias sdn="cd ~/repos/GoWork/src/git.soma.salesforce.com/sdn/sdn"
+alias sdn2="cd ~/repos/GoWork/src/git.soma.salesforce.com/sdn2/sdn"
+alias sam="cd ~/repos/GoWork/src/git.soma.salesforce.com/sam/sam"
+alias gitsync='git pull --rebase upstream master'
+
+#Gingham related Redis and Rabbit.
+alias redis="cd /usr/local/Cellar/redis/4.0.0/bin"
+alias rabbit="cd /usr/local/Cellar/rabbitmq/3.6.9_1/sbin"
+
+#login to other machines
+alias nru="ssh nagareddy.reddy@nreddy-wsl3"
+#Kubernetis Aliases
+
+alias kc='kubectl'
+alias kcsdc='kc --context=prd-sdc'
+alias kcsam='kc --context=prd-sam'
+alias kcsd='kc --context=prd-samdev'
+alias kcst='kc --context=prd-samtest'
+alias kclocal='kc --context=minikube'
+alias kcg='kc --context=gke_nrrealestateai_us-west1-a_estateai'
+
+alias logs='kc logs --namespace=sam-system $1'
+alias sdclogs='kc logs --namespace=sam-system --context=prd-sdc $1'
+alias samlogs='kc logs --namespace=sam-system --context=prd-sam $1'
+alias sdlogs='kc logs --namespace=sam-system --context=prd-samdev $1'
+alias stlogs='kc logs --namespace=sam-system --context=prd-samtest $1'
+
+alias sdcpods='kc get pods --context=prd-sdc'
+alias sampods='kc get pods --context=prd-sam'
+alias sdpods='kc get pods --context=prd-samdev'
+alias stpods='kc get pods --context=prd-samtest'
+
+eval "$(pyenv init -)"
+pyenv virtualenvwrapper
+export PYTHONPATH=~/repos/estates
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="/Users/nagareddy.reddy/.sdkman"
+[[ -s "/Users/nagareddy.reddy/.sdkman/bin/sdkman-init.sh" ]] && source "/Users/nagareddy.reddy/.sdkman/bin/sdkman-init.sh"
+
+source ~/DevTools/google-cloud-sdk/completion.bash.inc
+source ~/DevTools/google-cloud-sdk/path.bash.inc
+

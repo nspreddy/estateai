@@ -1,0 +1,14 @@
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: elkui
+spec:
+  selector:
+    app: elkpod
+  ports:
+  - protocol: TCP
+    name: kibana
+    port: 5601
+    targetPort: 5601
+  type: LoadBalancer

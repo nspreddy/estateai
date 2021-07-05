@@ -1,0 +1,23 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: estatekc
+  labels:
+    app: estatekc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: estatekc
+  template:
+    metadata:
+      labels:
+        app: estatekc
+    spec:
+      containers:
+       - name: estatekc
+         image: docker.io/nagareddy/estateai:nagareddy.reddy-D-201712032309
+         command: ["/app/bin/estateAIApp"]
+         args: ["--config=/app/bin/estateking.yaml"]
+         ports:
+           - containerPort: 8080

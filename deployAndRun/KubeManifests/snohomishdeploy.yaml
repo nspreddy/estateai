@@ -1,0 +1,24 @@
+
+apiVersion: apps/v1beta1 # for versions before 1.8.0 use apps/v1beta1
+kind: Deployment
+metadata:
+  name: snohomishcrawler
+  labels:
+    app: snohomishcrawler
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: snohomishcrawler
+  template:
+    metadata:
+      labels:
+        app: snohomishcrawler
+    spec:
+      containers:
+       - name: snohomishcrawler
+         image: docker.io/nagareddy/estateai:nagareddy.reddy-D-201712032309
+         command: ["/app/bin/estateAIApp"]
+         args: ["--config=/app/bin/estatesnohomish.yaml"]
+         ports:
+           - containerPort: 8080

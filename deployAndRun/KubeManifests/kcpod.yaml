@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: estatekc
+spec:
+  containers:
+  - name: escrawlkc
+    image: docker.io/nagareddy/estateai:nagareddy.reddy-D-201712032309
+    command: ["/app/bin/estateAIApp"]
+    args: ["--config=/app/bin/estateking.yaml"]
+    ports:
+     - containerPort: 8080

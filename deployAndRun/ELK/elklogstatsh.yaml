@@ -1,0 +1,28 @@
+
+apiVersion: apps/v1beta2 # for versions before 1.8.0 use apps/v1beta1
+kind: Deployment
+metadata:
+  name: elklogstash
+  labels:
+    app: elklogstash
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: elklogstash
+  template:
+    metadata:
+      labels:
+        app: elklogstash
+    spec:
+      containers:
+       - name: elklogstatsh
+         image: docker.io/nagareddy/loghauler:v1.5
+         volumeMounts:
+         - mountPath: /data/logs
+           name: logsvolume
+      volumes:
+       - name: logsvolume
+         hostPath:
+          path: /home/docker/elkdata/logs
+          type: Directory

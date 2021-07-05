@@ -1,0 +1,23 @@
+apiVersion: apps/v1beta1 
+kind: Deployment
+metadata:
+  name: peircecrawler
+  labels:
+    app: peircecrawler
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: peircecrawler
+  template:
+    metadata:
+      labels:
+        app: peircecrawler
+    spec:
+      containers:
+       - name: peircecrawler
+         image: docker.io/nagareddy/estateai:nagareddy.reddy-D-201712032309
+         command: ["/app/bin/estateAIApp"]
+         args: ["--config=/app/bin/estatepierce.yaml"]
+         ports:
+           - containerPort: 8080
