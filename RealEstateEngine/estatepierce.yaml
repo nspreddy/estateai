@@ -1,0 +1,67 @@
+
+ApplicationConfiguration:
+      LogLevel: "Info"
+      MetricsUrl: "http://samplemetrics.com"
+
+CommonConfiguration :
+      ZillowConfiguration:
+           Id: "27017"
+
+AreaCrawlerConfig:
+       AreaFeedConfigFile: "areaconfig.json"
+       CrawlInterval: 240
+
+WebCrawlConfig:
+        Url: "https://www.trulia.com/sitemap/Washington-real-estate/Pierce-County-53053/"
+        PropertyUrl: "https://www.trulia.com/property/"
+        CrawlInterval: 720
+        DUAgent: "Trulia"
+        Entities:
+          Address:
+               Query: "div[data-role='address']"
+               SubQuery: ""
+               Attr: ""
+          CityState:
+               Query: "span[data-role='cityState']"
+               SubQuery: ""
+               Attr: ""
+          Price:
+               Query: "span[data-role='price']"
+               SubQuery: ""
+               Attr: ""
+          KeyFactors:
+               Query: "div[data-auto-test-id='home-details-overview'] li"
+               SubQuery: ""
+               Attr: ""
+          PriceHistory:
+               Query: "div[data-auto-test-id='home-details-price-history'] div.row.pbm"
+               SubQuery: "div"
+               Attr: ""
+          PropertyFeatures:
+               Query: "div[data-auto-test-id='home-details-features'] ul.man li"
+               SubQuery: ""
+               Attr: ""
+PropertyAnalyzerConfig:
+               AreaPrefs:
+                       - AreaType: "zipcode"
+                         AreadID: "98004"
+                         Score: 10
+ApiKeysConfig:
+               GoogleApiCode: "4/M-PuAvjel0FqkSEYvcxW3nldZgnttIuDFjjAERFpa9Q"
+
+DatahaulConfig:
+               OutpufFileName:  "PierceCountyResults.csv"
+               WriteToDb:       true
+               DbConfig:
+                       Provider:    "mysql"
+                       DBHost:      "35.197.120.109"
+                       GcpSql: "nrrealestateai:us-west1:neestatedb"
+                       GcpTknFile: "NRRealEstateAI-def46d9aefc4.json"
+                       PortNumber:  3306
+                       UserName:    "root"
+                       Password:    "Vanamali12#"
+                       DBName:      "estateAIDb"
+                       TableName:   "piercecounty"
+
+ApiServiceConfig:
+        ListenPort: "8080"

@@ -33,3 +33,4 @@ vendor
 #.vagrant directory 
 .vagrant
 
+/LearningCode/src/NetCore/HtmlPageExtractorTest/HtmlPageExtractorTest/obj

@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "nrrealestateai",
+  "private_key_id": "def46d9aefc40a653e8f7499b73b3f7e1d5e743b",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDN/KIPuEdADvuI\nY1RTt1ZJD97aTHFAm9sAW4CWp3j1D6E47Izo3dNvSE3nZEfJZaTON1brXTjsE2ZB\nywCByn/C17dBfm7/QAlldEWDqYsJQIy7fmc5iR+o+p5mwQDpGeFXyEUv8or3oVEM\nvFqqmDuTAmTnt/PT3m4VsOvBc2izU7EfdGGtGOjoMnUXUQKSjxaxjGHXnd2WMlzI\nOnwpgnrty45ybGzICuo+Ow1pTQTtBJrZsNs19ZL9UQjyyB8yGultIJrhq1xTPHXD\n6lMENRS3DgDTmoyvDQ69aBaC0tBjIEZ6NkxN1O+falBPGc44WYqtVVOj+YRH6ppn\neBgzpiM3AgMBAAECggEAP+5zjCZ5MrgTuHp/vzXtWWLMG3vTQKa+24cKy3dyErlF\npCnC+Dl0+Jp711/n6emas4g4eXdnBdplh/EOGLp1Wc9i6Lhpkd5ZrDvgoWMbLIV0\nyHKMbi6RfXw/covfkPl/16NoWd/Q4teWFLpW95ClGNUK5WJSEoV8LE5LdbCwo8s8\nRufHhfkwN7FaEFIJz1Spsu0kYnYGi08BzDOPzWed8tSX2n4CgqxOQzZ2661JZ4M0\n2yqSRdJl5Tegy5hv9et7ZLReCCa1wv5WZ3Rl7DqYo6DdCBDorqdOrI3WOEg7anX9\nnGjj0xeehpwGfVRUroH/mK8MKAnt6bWCbU7h6hDoLQKBgQD8QitZiKykWOE5eGto\n8Sfys2CGuD8ZoNkklZr2RbX5S8dOju4dofH5HcerH/oAAaLBS6s8brcvcN3vDDx2\n53IXqLKmUgST9gE97wLddL89i36vbrebzsdWawsnqUcgc5uKefCOiggwRU5UZsSa\nKpcJTZ3+SUPfla+secLJQGrgrQKBgQDRCsT24LWDrCZ9EHaBFweJ/iXslX0FgCsf\negyFi02mf0RSOZgVr7ZLt/YNtwAAsxDkztoZe/QnzxwQfWuZ0EUv1KfQsqfY5jaQ\nCpWylKhxbjuSDECTW2YODrVTTrz+4iqM6a5YN5U5Wuuie0LIsxPNM1seqxMbBoYq\nSSPAbHc78wKBgF2Djhxv3UhDpqKucGsD00JWmvb2QHYYucalK0AWkaIsJGOL+tvD\nWDd4gbd/cCcmdBZiHcWWaZRNrAhdKeEOZa49nJSpnQbY0JcMDqzYBbkkCD+ytKAu\n5Ji1r/nw9+wgz01jbPj6VJTIbIQ/YKyiE0Ggo2xL7rxo+infLYV7uuM1AoGAX5qy\nTEqnGWphS+98kzuKGiVfCN2xiRN+JW43TdhREiXAhG6MzNZI5EZlRQ599NPwlQS5\noNAc8Rv6tNv3mygyjFaQzZT3yO445BXDMyJkC0Sj//6UhhBWE3XMniYzr8qWNU4m\ni3gYSlv3yp7fA1VLaBzlvpf1K/YG5E4BCN9ShNsCgYEAlgzMPjITFUpdHdpoW/Eu\ndr4ikLTp+AU09gLMV9IlChfcwh/NyqZvLgjOWPNCqz49jqFEjxMVHTE8P7Kqjlej\n4sRYLqAfvkgtyWHzurQcOKmUeJ/o4B6cwRgUWHjpXTLQt9Y8bP7QdT6BbSeueaOV\nLHqYRQWixGefdxAcCnU9esM=\n-----END PRIVATE KEY-----\n",
+  "client_email": "mysqlgoclient@nrrealestateai.iam.gserviceaccount.com",
+  "client_id": "105005903678074368054",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://accounts.google.com/o/oauth2/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/mysqlgoclient%40nrrealestateai.iam.gserviceaccount.com"
+}

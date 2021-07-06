@@ -14,9 +14,9 @@ import (
 	"nrideas.visualstudio.com/EstateAI/src/OrchestrationEngine"
 	"nrideas.visualstudio.com/EstateAI/src/PropertyAnalyzer"
 	"nrideas.visualstudio.com/EstateAI/src/ReWebCrawl"
+	"nrideas.visualstudio.com/EstateAI/src/UtilLibs"
 	"os"
 	"time"
-	"nrideas.visualstudio.com/EstateAI/src/UtilLibs"
 )
 
 var options struct {
