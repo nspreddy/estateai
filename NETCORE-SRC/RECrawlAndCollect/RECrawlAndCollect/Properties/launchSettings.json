@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "RECrawlAndCollect": {
+      "commandName": "Project",
+      "commandLineArgs": "crawl -u http://www.sun.com http://mon.com"
+    }
+  }
+}

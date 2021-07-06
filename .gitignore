@@ -34,3 +34,5 @@ vendor
 .vagrant
 
 /LearningCode/src/NetCore/HtmlPageExtractorTest/HtmlPageExtractorTest/obj
+/NETCORE-SRC/RECrawlAndCollect/RECrawlAndCollect/obj
+/NETCORE-SRC/RECrawlAndCollect/.vs/RECrawlAndCollect/v17/.suo
