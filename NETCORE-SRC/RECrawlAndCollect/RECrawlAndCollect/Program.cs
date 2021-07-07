@@ -46,10 +46,7 @@ namespace RECrawlAndCollect
                     {
                         // Let us crawl thoses URLs.
                         var urls = urlsOption.Values;
-                        foreach (var url in urls)
-                        {
-                            Console.WriteLine($" URL to crawl {url}");
-                        }
+                        CrawlCmdLineParams.ProcessUrls(urls);
                         optionExecuted = true;
                     }
 
@@ -82,9 +79,17 @@ namespace RECrawlAndCollect
             #endregion
 
             try
-            {
-                var result = app.Execute(args);
-                Console.WriteLine($"Result of {execName} Execute .. {result}");
+            {   
+                if (args.Length == 0)
+                {
+                    Console.WriteLine($" HELP: {execName} {HELP}");
+                }
+                else
+                {
+                    // Setup as needed
+                    var result = app.Execute(args);
+                    Console.WriteLine($"Result of {execName} Execute .. {result}");
+                }
             }
             catch (CommandParsingException)
             {

@@ -36,3 +36,6 @@ vendor
 /LearningCode/src/NetCore/HtmlPageExtractorTest/HtmlPageExtractorTest/obj
 /NETCORE-SRC/RECrawlAndCollect/RECrawlAndCollect/obj
 /NETCORE-SRC/RECrawlAndCollect/.vs/RECrawlAndCollect/v17/.suo
+/NETCORE-SRC/RECrawlAndCollect/CommonAndUtils/obj
+/NETCORE-SRC/RECrawlAndCollect/CrawlerLib/obj
+/NETCORE-SRC/RECrawlAndCollect/DataModels/obj

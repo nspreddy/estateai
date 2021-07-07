@@ -2,7 +2,8 @@
   "profiles": {
     "RECrawlAndCollect": {
       "commandName": "Project",
-      "commandLineArgs": "crawl -u http://www.sun.com http://mon.com"
+      "commandLineArgs": "crawl -u https://www.zillow.com/homedetails/1215-Cook-Ave-Billings-MT-59102/3165171_zpid/",
+      "sqlDebugging": true
     }
   }
 }
