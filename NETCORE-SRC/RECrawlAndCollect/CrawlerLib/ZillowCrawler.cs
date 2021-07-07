@@ -121,44 +121,7 @@ namespace CrawlerLib
             return returnValue;
 
         }
-
-        private HtmlDocument  getHtmlDocFromUrl(String url)
-        {
-            try
-            {
-
-                var httpReq = (HttpWebRequest)WebRequest.Create(url);
-
-                httpReq.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9";
-                httpReq.Headers.Add(HttpRequestHeader.Connection, "keep-alive");
-                //httpReq.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36 Edg/91.0.864.64";
-                httpReq.UserAgent = "Mediapartners-Google";
-                //httpReq.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip, deflate, br");
-                httpReq.Headers.Add(HttpRequestHeader.AcceptLanguage, "en-US,en;q=0.9,te;q=0.8");
-
-
-                HttpWebResponse response = (HttpWebResponse)httpReq.GetResponse();  
-                if( response.StatusCode == HttpStatusCode.OK){
-                    StreamReader htmlRspStream = new StreamReader(response.GetResponseStream());
-                    string htmlText = htmlRspStream.ReadToEnd();                   
-                    var htmlDoc = new HtmlDocument();
-                    htmlDoc.LoadHtml(htmlText);
-                    return htmlDoc;
-                }
-                else
-                {
-                    Console.WriteLine($" Statud Code of http Request..{ response.StatusCode}");
-                }
-                
-            }
-            catch(Exception ex)
-            {
-                Console.WriteLine($" Exception While Cralwing: {url}, Exception Message: {ex.Message}");
-            }
-            return null;
-        }
-
-       
+               
 
         // this method cralws out put HTML of https://www.zillow.com/browse/homes/
         private const string XPATH_STATES_USA         = "//h2[.='United States']";
@@ -168,7 +131,7 @@ namespace CrawlerLib
         {
             try
             {
-                HtmlDocument htmlDoc = getHtmlDocFromUrl(url);
+                HtmlDocument htmlDoc = CrawlUtils.getHtmlDocFromUrl(url);
                 // Let us test for  US states only for now.. 
                 var countryNode = htmlDoc.DocumentNode.SelectSingleNode(XPATH_STATES_USA);
 
@@ -224,7 +187,7 @@ namespace CrawlerLib
         {
             try
             {
-                HtmlDocument htmlDoc = getHtmlDocFromUrl(url);
+                HtmlDocument htmlDoc = CrawlUtils.getHtmlDocFromUrl(url);
 
                 // Let us test for  US states only for now.. 
                 var countyNodes = htmlDoc.DocumentNode.SelectNodes(XPATH_UL_LI_ANCHOR_LINKS);
@@ -268,7 +231,7 @@ namespace CrawlerLib
         {
             try
             {
-                HtmlDocument htmlDoc = getHtmlDocFromUrl(url);
+                HtmlDocument htmlDoc = CrawlUtils.getHtmlDocFromUrl(url);
 
                 // Let us test for  US states only for now.. 
                 var propertyNodes = htmlDoc.DocumentNode.SelectNodes(XPATH_UL_BODYLINKS_LI_ANCHOR_LINKS);
@@ -331,7 +294,7 @@ namespace CrawlerLib
         {
             try
             {
-                HtmlDocument htmlDoc = getHtmlDocFromUrl(url);
+                HtmlDocument htmlDoc = CrawlUtils.getHtmlDocFromUrl(url);
                 Console.WriteLine($"Crawled proprty URL: {url}");
                 
                 MarkAsCrawled(url);

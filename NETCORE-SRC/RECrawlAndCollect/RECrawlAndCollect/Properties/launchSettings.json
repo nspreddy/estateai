@@ -2,8 +2,8 @@
   "profiles": {
     "RECrawlAndCollect": {
       "commandName": "Project",
-      "commandLineArgs": "crawl -u https://www.zillow.com/homedetails/1215-Cook-Ave-Billings-MT-59102/3165171_zpid/",
-      "sqlDebugging": true
+      "commandLineArgs": "crawl -u https://www.redfin.com/WA/Moses-Lake/7883-Dune-Lake-Rd-SE-98837/home/16825240",
+      "sqlDebugging": false
     }
   }
 }
