@@ -39,3 +39,5 @@ vendor
 /NETCORE-SRC/RECrawlAndCollect/CommonAndUtils/obj
 /NETCORE-SRC/RECrawlAndCollect/CrawlerLib/obj
 /NETCORE-SRC/RECrawlAndCollect/DataModels/obj
+/NETCORE-SRC/RECrawlAndCollect/.vs/RECrawlAndCollect/v16/.suo
+/NETCORE-SRC/RECrawlAndCollect/GeoDataBuilder/obj

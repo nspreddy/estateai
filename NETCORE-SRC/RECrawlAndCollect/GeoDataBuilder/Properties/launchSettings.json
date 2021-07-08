@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "GeoDataBuilder": {
+      "commandName": "Project",
+      "commandLineArgs": "-c geoDB.csv -o output.json"
+    }
+  }
+}
