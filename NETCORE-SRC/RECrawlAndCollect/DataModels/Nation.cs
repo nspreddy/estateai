@@ -29,14 +29,16 @@ namespace DataModels
 
             try
             {
-                State stateObject;
-                
-                if( !StatesList.TryGetValue(state,out stateObject))
+                if (!string.IsNullOrEmpty(state) && !string.IsNullOrEmpty(county) && !string.IsNullOrEmpty(city) && !string.IsNullOrEmpty(zipcode))
                 {
-                    stateObject= new State(state);
-                    StatesList[state] = stateObject;
+                    State stateObject;
+                    if (!StatesList.TryGetValue(state, out stateObject))
+                    {
+                        stateObject = new State(state);
+                        StatesList[state] = stateObject;
+                    }
+                    returnValue = stateObject.InsertGeoRecord(county, city, zipcode);
                 }
-                returnValue = stateObject.InsertGeoRecord(county, city, zipcode);
             }
             catch(Exception e)
             {

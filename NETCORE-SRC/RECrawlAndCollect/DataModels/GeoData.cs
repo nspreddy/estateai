@@ -7,13 +7,14 @@ using System.IO;
 using Newtonsoft.Json;
 
 namespace DataModels
-{   
+{
     public class GeoData
     {
         private const string DEFAULT_NATION = "USA";
         private Dictionary<string, Nation> Nations = new Dictionary<string, Nation>();
         private static GeoData _instance = null;
 
+        #region PRIVATE_HELPERS
         private GeoData()
         {
         }
@@ -29,13 +30,13 @@ namespace DataModels
             }
         }
 
-        private Nation  GetNation( string code)
+        private Nation GetNationByCode(string code)
         {
             Nation nation = null;
 
-            if(!string.IsNullOrEmpty(code))
+            if (!string.IsNullOrEmpty(code))
             {
-                if( !Nations.TryGetValue(code, out nation))
+                if (!Nations.TryGetValue(code, out nation))
                 {
                     nation = new Nation();
                     Nations.Add(code, nation);
@@ -43,20 +44,34 @@ namespace DataModels
             }
             return nation;
         }
-        // Default Nation is USA. 
-        private static Nation DefaultNation => Instance?.GetNation(DEFAULT_NATION);
 
-        public static bool InsertGeoRecord(string state, string county, string city, string zipcode)
-        {  
-            if( !string.IsNullOrEmpty(state) && !string.IsNullOrEmpty(county) && !string.IsNullOrEmpty(city) && !string.IsNullOrEmpty(zipcode))
+        private void UpsertNationData(string code, Nation nation)
+        {
+            if (!string.IsNullOrEmpty(code))
             {
-                return DefaultNation.InsertGeoRecord(state, county, city, zipcode);
+                Nations[code] = nation;
             }
-            
-            return false;            
+        }
+        #endregion
+
+        #region PUBLIC_METHODS
+        // Default Nation is USA. 
+        public static Nation DefaultNation => GetNation();
+        public static Nation GetNation(string code = DEFAULT_NATION)
+        {
+            if (!string.IsNullOrEmpty(code))
+            {
+                return Instance?.GetNationByCode(code);
+            }
+            return null;
         }
 
-        public static void WriteJsonToFile( string outputFile)
+        public static bool InsertGeoRecord(string state, string county, string city, string zipcode)
+        {
+            return DefaultNation.InsertGeoRecord(state, county, city, zipcode);
+        }
+
+        public static void WriteJsonToFile(string outputFile)
         {
             try
             {
@@ -74,5 +89,27 @@ namespace DataModels
                 Console.WriteLine($" Failed to Write to file {outputFile}, exception: {ex.Message}");
             }
         }
+
+        public static void LoadGeoDBFromJsonFile(string jsonFileName)
+        {
+            try
+            {
+                using (StreamReader file = File.OpenText(jsonFileName))
+                {
+                    JsonSerializer serializer = new JsonSerializer();
+                    Nation nationData = (Nation)serializer.Deserialize(file, typeof(Nation));
+                    if (nationData != null)
+                    {
+                        Instance.UpsertNationData(DEFAULT_NATION, nationData);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($" Failed to Write to file {jsonFileName}, exception: {ex.Message}");
+            }
+
+        }
+        #endregion
     }
 }
