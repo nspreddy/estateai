@@ -147,7 +147,7 @@ namespace CrawlerLib
                             Console.WriteLine($"Prop-Link: {propLinkUrl}");
                             propertyLinks.Add(propLinkUrl);
                         }
-                        Console.WriteLine($" Total Prop Links: {propertyLinks.Count}");
+                        Console.WriteLine($"Total Prop Links: {propertyLinks.Count}");
                         MarkAsCrawled(url);
                     }
                 }
