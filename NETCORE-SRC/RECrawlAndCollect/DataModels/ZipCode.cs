@@ -3,11 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace DataModels
 {
-    class ZipCode
+    public class ZipCode
     {
-        public string Name { get; private set; }
+        [JsonProperty(PropertyName = "zipcode")]
+        public string Name { get; set; }
+
+        public ZipCode() { }
+        public ZipCode(string name)
+        {
+            Name = name;
+        }
     }
 }

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Text.RegularExpressions;
+using DataModels;
 
 namespace GeoDataBuilder
 {
@@ -46,6 +47,11 @@ namespace GeoDataBuilder
                         var zipcode = regExCollections[ZIP_COL_INDEX]?.Value.TrimStart(',').Trim();
 
                         Console.WriteLine($" State: {state}, County:{county}, City: {city} , ZipCode: {zipcode}");
+                        returnValue = GeoData.InsertGeoRecord(state, county, city, zipcode);
+                        if (!returnValue)
+                        {
+                            Console.WriteLine($"Failed to Insert Record(State: {state}, County:{county}, City: {city} , ZipCode: {zipcode})");
+                        }
                     }                   
                 }
                 else
@@ -95,7 +101,8 @@ namespace GeoDataBuilder
                         var outputStr =  failedRows > 0 ? $" Failed ROWS: {failedRows}" : $"processed with no errors";
                         Console.WriteLine(outputStr);
                     }
-
+                    // Time to write File with JSON data
+                    GeoData.WriteJsonToFile(outputFileName);
                     returnVal = true;
                 }
                 catch (Exception ex)

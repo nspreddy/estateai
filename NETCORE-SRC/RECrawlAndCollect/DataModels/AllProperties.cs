@@ -8,8 +8,6 @@ namespace DataModels
 {
     class AllProperties
     {
-        private Dictionary<string,Nation> Nations = new Dictionary<string, Nation>();
-        
-       
+        public Dictionary<string,Property> Properties = new Dictionary<string, Property>();              
     }
 }

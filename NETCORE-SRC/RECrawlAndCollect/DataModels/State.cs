@@ -3,28 +3,45 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace DataModels
 {
-    class State
+    public class State
     {
-        
-        private Dictionary<string,County> CountyList = new Dictionary<string,County>();
+        [JsonProperty(PropertyName = "County-Data")]
+        public Dictionary<string,County> CountyList = new Dictionary<string,County>();
+        [JsonProperty(PropertyName = "StateCode")]
+        public string Name { get; set; }
 
-        public string Name { get; private set; }
+        public State() { }
         public State( string name)
         {
             Name = name;
         }
 
-        public County getCounty(string countName)
+        public bool InsertGeoRecord( string county, string city, string zipcode)
         {
-            return null;
-        }
+            bool returnValue = false;
 
-        public bool UpsertCounty( string countyName, County county)
-        {
-            return true;
+            try
+            {
+                County countyObject;
+
+                if (!CountyList.TryGetValue(county, out countyObject))
+                {
+                    countyObject = new County(county);
+                    CountyList[county] = countyObject;
+                }
+                returnValue = countyObject.InsertGeoRecord(city,zipcode);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Unable to insert geoRecord {county}, {city},{zipcode}");
+            }
+
+            return returnValue;
+
         }
     }
 }
