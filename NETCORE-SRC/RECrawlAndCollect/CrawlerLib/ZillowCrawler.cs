@@ -131,7 +131,7 @@ namespace CrawlerLib
         {
             try
             {
-                HtmlDocument htmlDoc = CrawlUtils.getHtmlDocFromUrl(url);
+                HtmlDocument htmlDoc = CrawlUtils.getHtmlDocFromUrlAsync(url);
                 // Let us test for  US states only for now.. 
                 var countryNode = htmlDoc.DocumentNode.SelectSingleNode(XPATH_STATES_USA);
 
@@ -187,7 +187,7 @@ namespace CrawlerLib
         {
             try
             {
-                HtmlDocument htmlDoc = CrawlUtils.getHtmlDocFromUrl(url);
+                HtmlDocument htmlDoc = CrawlUtils.getHtmlDocFromUrlAsync(url);
 
                 // Let us test for  US states only for now.. 
                 var countyNodes = htmlDoc.DocumentNode.SelectNodes(XPATH_UL_LI_ANCHOR_LINKS);
@@ -231,7 +231,7 @@ namespace CrawlerLib
         {
             try
             {
-                HtmlDocument htmlDoc = CrawlUtils.getHtmlDocFromUrl(url);
+                HtmlDocument htmlDoc = CrawlUtils.getHtmlDocFromUrlAsync(url);
 
                 // Let us test for  US states only for now.. 
                 var propertyNodes = htmlDoc.DocumentNode.SelectNodes(XPATH_UL_BODYLINKS_LI_ANCHOR_LINKS);
@@ -294,7 +294,7 @@ namespace CrawlerLib
         {
             try
             {
-                HtmlDocument htmlDoc = CrawlUtils.getHtmlDocFromUrl(url);
+                HtmlDocument htmlDoc = CrawlUtils.getHtmlDocFromUrlAsync(url);
                 Console.WriteLine($"Crawled proprty URL: {url}");
                 
                 MarkAsCrawled(url);

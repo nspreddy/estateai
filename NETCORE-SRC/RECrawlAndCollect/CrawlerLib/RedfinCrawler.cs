@@ -87,7 +87,7 @@ namespace CrawlerLib
         {
             try
             {
-                HtmlDocument htmlDoc = CrawlUtils.getHtmlDocFromUrl(url);
+                HtmlDocument htmlDoc = CrawlUtils.getHtmlDocFromUrlAsync(url);
                 // Extract Street Address
                 if (htmlDoc != null)
                 {
