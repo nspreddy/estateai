@@ -2,8 +2,8 @@
   "profiles": {
     "RECrawlAndCollect": {
       "commandName": "Project",
-      "commandLineArgs": "crawl -u https://www.redfin.com/WA/Moses-Lake/7883-Dune-Lake-Rd-SE-98837/home/16825240",
-      "sqlDebugging": false
+      "commandLineArgs": "crawl -u https://www.redfin.com/sitemap-xml/listings_WA_sitemap.xml.gz",
+      "sqlDebugging": true
     }
   }
 }

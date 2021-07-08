@@ -18,18 +18,24 @@ namespace CrawlerLib
 
         #region PRIVATE_METHODS
 
-        enum URLType { PROPERTY,COUNTY_STATS,CITY_STATS,ZIPCODE_STATS,NGHOOD_STATS, UNKNOWN};
-
+        enum URLType { PROPERTY,COUNTY_STATS,CITY_STATS,ZIPCODE_STATS,NGHOOD_STATS, XMLPROPTYLIST, UNKNOWN};
+        private const string SITEMAPXML = "sitemap-xml/";
         private URLType getUrlType( Uri uri)
         {
             URLType typeOfUrl = URLType.UNKNOWN;
 
-            // https://www.redfin.com/WA/Moses-Lake/7883-Dune-Lake-Rd-SE-98837/home/16825240 Property URL 
-
             switch( uri.Segments.Length)
             {
                 case 6:
+                    // https://www.redfin.com/WA/Moses-Lake/7883-Dune-Lake-Rd-SE-98837/home/16825240 Property URL
                     typeOfUrl = URLType.PROPERTY;
+                    break;
+                case 3:
+                     // https://www.redfin.com/sitemap-xml/listings_WA_sitemap.xml.gz
+                     if( uri.Segments[1].Trim() == SITEMAPXML)
+                    {
+                        typeOfUrl = URLType.XMLPROPTYLIST;
+                    }
                     break;
             }
 
@@ -119,6 +125,46 @@ namespace CrawlerLib
             }
         }
 
+        private const string XPATH_PROP_LINKS = "//loc";
+        private void CrawlAndExtractPropertyLinks(string url)
+        {
+            try
+            {
+                HtmlDocument xmlDoc = CrawlUtils.getHtmlDocFromUrlAsync(url);
+
+                // This is list of XML list 
+                if (xmlDoc != null)
+                {
+                    var propertyUrlNodes  = xmlDoc.DocumentNode.SelectNodes(XPATH_PROP_LINKS);
+
+                    if (propertyUrlNodes != null)
+                    {
+                        List<string> propertyLinks = new List<string>();
+
+                        foreach (var propNode in propertyUrlNodes)
+                        {
+                            var propLinkUrl = propNode.InnerText;
+                            Console.WriteLine($"Prop-Link: {propLinkUrl}");
+                            propertyLinks.Add(propLinkUrl);
+                        }
+
+                        MarkAsCrawled(url);
+                    }
+                }
+                else
+                {
+                    Console.WriteLine($" Unbale to get HTML Doc .. may be throttled {url}");
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Exception:  '{ex.Message}'");
+            }
+        }
+
+
         #endregion
         protected override bool ProcessURI(Uri uri)
         {
@@ -126,6 +172,9 @@ namespace CrawlerLib
             {
                 case URLType.PROPERTY:
                     CrawlAndExtractPropertyDetails(uri.AbsoluteUri);
+                    break;
+                case URLType.XMLPROPTYLIST:
+                    CrawlAndExtractPropertyLinks(uri.AbsoluteUri);
                     break;
             }
             return true;
