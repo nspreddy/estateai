@@ -46,9 +46,14 @@ namespace DataModels
         // Default Nation is USA. 
         private static Nation DefaultNation => Instance?.GetNation(DEFAULT_NATION);
 
-        public static bool InsertGeoRecord(string State, string county, string city, string zipcode)
-        {            
-            return DefaultNation.InsertGeoRecord(State, county, city, zipcode);
+        public static bool InsertGeoRecord(string state, string county, string city, string zipcode)
+        {  
+            if( !string.IsNullOrEmpty(state) && !string.IsNullOrEmpty(county) && !string.IsNullOrEmpty(city) && !string.IsNullOrEmpty(zipcode))
+            {
+                return DefaultNation.InsertGeoRecord(state, county, city, zipcode);
+            }
+            
+            return false;            
         }
 
         public static void WriteJsonToFile( string outputFile)
@@ -57,14 +62,16 @@ namespace DataModels
             {
                 using (StreamWriter file = File.CreateText(outputFile))
                 {
+                    //string jsonPayload = JsonConvert.SerializeObject(DefaultNation,Formatting.Indented);
                     JsonSerializer serializer = new JsonSerializer();
+                    serializer.Formatting = Formatting.Indented;
                     serializer.Serialize(file, DefaultNation);
                 }
 
             }
             catch (Exception ex)
             {
-                Console.WriteLine($" Failed to Write to file {outputFile}");
+                Console.WriteLine($" Failed to Write to file {outputFile}, exception: {ex.Message}");
             }
         }
     }

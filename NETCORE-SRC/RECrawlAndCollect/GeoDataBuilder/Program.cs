@@ -109,7 +109,7 @@ namespace GeoDataBuilder
                 {
                     // Setup as needed
                     var result = app.Execute(args);
-                    Console.WriteLine($"Result of {execName} Execute .. {result}");
+                    //Console.WriteLine($"Result of {execName} Execute .. {result}");
                 }
             }
             catch (CommandParsingException)

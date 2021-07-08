@@ -13,12 +13,18 @@ namespace GeoDataBuilder
     {
         private const int NUMBEROFENTITIES = 15;        
         private const int ZIP_COL_INDEX = 0;
+        private const int TYPE_COL_INDEX = 1;
+        private const int DECOMM_COL_INDEX = 2;
         private const int CITY_COL_INDEX = 3;
         private const int STATE_COL_INDEX = 6;
         private const int COUNTY_COL_INDEX = 7;
         private const int COUNTRY_COL_INDEX = 11;
+
+        private const string PARSING_LOGS = "parsinglogs.txt";
+
         private string inputFileName;
         private string outputFileName;
+        private StreamWriter parsingLogWriter;// for error and warnging
 
 
         private const string CSV_REGEX = @"(?:,|^)([^"",]+|""(?:[^""]|"""")*"")?";
@@ -38,20 +44,39 @@ namespace GeoDataBuilder
                     if( regExCollections[0].Value.Trim()== "zip")
                     {
                         Console.WriteLine("Skipping header row");
+                        returnValue = true;
                     }
                     else
                     {
-                        var state = regExCollections[STATE_COL_INDEX]?.Value.TrimStart(',').Trim();
+                        var type    = regExCollections[TYPE_COL_INDEX]?.Value.TrimStart(',').Trim();
+                        var decomm  = regExCollections[DECOMM_COL_INDEX]?.Value.TrimStart(',').Trim();
+
+                        var state   = regExCollections[STATE_COL_INDEX]?.Value.TrimStart(',').Trim();
                         var county  = regExCollections[COUNTY_COL_INDEX]?.Value.TrimStart(',').Trim('\"').Trim();
                         var city    = regExCollections[CITY_COL_INDEX]?.Value.TrimStart(',').Trim();
                         var zipcode = regExCollections[ZIP_COL_INDEX]?.Value.TrimStart(',').Trim();
 
-                        Console.WriteLine($" State: {state}, County:{county}, City: {city} , ZipCode: {zipcode}");
-                        returnValue = GeoData.InsertGeoRecord(state, county, city, zipcode);
-                        if (!returnValue)
+                        if( Convert.ToInt32(decomm) == 1)
                         {
-                            Console.WriteLine($"Failed to Insert Record(State: {state}, County:{county}, City: {city} , ZipCode: {zipcode})");
+                            var infoStr = $"Information - Record Decomm'd ( Type: {type} Decomm: {decomm} State: {state}, County:{county}, City: {city} , ZipCode: {zipcode})";
+                            parsingLogWriter.WriteLine(infoStr);
+                            returnValue = true;
                         }
+                        else
+                        {
+                            
+                            if(string.IsNullOrEmpty(county))
+                            {
+                                county = type;
+                            }
+                            returnValue = GeoData.InsertGeoRecord(state, county, city, zipcode);
+                            if (!returnValue)
+                            {
+                                var warnStr = $"Warning - Failed to Insert Record( Type: {type} Decomm: {decomm} State: {state}, County:{county}, City: {city} , ZipCode: {zipcode})";
+                                parsingLogWriter.WriteLine(warnStr);
+                            }
+
+                        }                        
                     }                   
                 }
                 else
@@ -89,6 +114,7 @@ namespace GeoDataBuilder
                     {
                         string line;
                         int failedRows=0;
+                        parsingLogWriter = File.CreateText(PARSING_LOGS);
                         // Read and display lines from the file until the end of
                         // the file is reached.
                         while ((line = sr.ReadLine()) != null)
@@ -98,7 +124,8 @@ namespace GeoDataBuilder
                                 ++failedRows;                                
                             }
                         }
-                        var outputStr =  failedRows > 0 ? $" Failed ROWS: {failedRows}" : $"processed with no errors";
+                        var outputStr =  failedRows > 0 ? $"Summary: Failed ROWS: {failedRows}" : $"Summary: Processed with no errors";
+                        parsingLogWriter.WriteLine(outputStr);
                         Console.WriteLine(outputStr);
                     }
                     // Time to write File with JSON data
