@@ -34,14 +34,13 @@ namespace RECrawlAndCollect
             #region CRAWL_ACTIONS
             app.Command(CRAWL, config =>
             {                
-                var configFileOption = config.Option(CFGFILEOPTION,"Configuration file(Yaml)",CommandOptionType.SingleValue);
-                var urlsOption = config.Option(URLOPTION, "Multiple URLs to crawl", CommandOptionType.MultipleValue);
+                var configFileOption = config.Option(CFGFILEOPTION,"Configuration file(JSON)",CommandOptionType.SingleValue);
+                var urlsOption       = config.Option(URLOPTION, "Multiple URLs to crawl", CommandOptionType.MultipleValue);
                 config.HelpOption(HELP);
                 
                 config.OnExecute(() =>
                 {
                     bool optionExecuted = false;
-
                     if (urlsOption.HasValue())
                     {
                         // Let us crawl thoses URLs.
@@ -49,20 +48,16 @@ namespace RECrawlAndCollect
                         CrawlCmdLineParams.ProcessUrls(urls);
                         optionExecuted = true;
                     }
-
                     if (configFileOption.HasValue())
                     {
                         var configFile = configFileOption.Value();
                         Console.WriteLine($"Parsing file {configFile} to crawl");
                         optionExecuted = true;
                     }
-
-
                     if (!optionExecuted)
                     {
                         Console.WriteLine($" OPT-HELp: {execName} {CRAWL} {HELP}");
                     }
-
                     return 0;
                 });
             });

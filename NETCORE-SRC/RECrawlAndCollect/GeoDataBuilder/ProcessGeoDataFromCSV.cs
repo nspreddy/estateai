@@ -31,7 +31,17 @@ namespace GeoDataBuilder
         
 
         #region PRIVATE_METHODS
-
+        private string  GetTrimmedText(string input)
+        {
+            if(!string.IsNullOrEmpty(input))
+            {
+                return input.TrimStart(',').Trim('\"').Trim();
+            }
+            else
+            {
+                return input;
+            }
+        }
         private bool ProcessRow(string row)
         {
             bool returnValue = false;
@@ -48,23 +58,21 @@ namespace GeoDataBuilder
                     }
                     else
                     {
-                        var type    = regExCollections[TYPE_COL_INDEX]?.Value.TrimStart(',').Trim();
-                        var decomm  = regExCollections[DECOMM_COL_INDEX]?.Value.TrimStart(',').Trim();
+                        var type = GetTrimmedText(regExCollections[TYPE_COL_INDEX]?.Value);
+                        var decomm = GetTrimmedText(regExCollections[DECOMM_COL_INDEX]?.Value);
+                        var state = GetTrimmedText(regExCollections[STATE_COL_INDEX]?.Value);
+                        var county = GetTrimmedText(regExCollections[COUNTY_COL_INDEX]?.Value);
+                        var city = GetTrimmedText(regExCollections[CITY_COL_INDEX]?.Value);
+                        var zipcode = GetTrimmedText(regExCollections[ZIP_COL_INDEX]?.Value);
 
-                        var state   = regExCollections[STATE_COL_INDEX]?.Value.TrimStart(',').Trim();
-                        var county  = regExCollections[COUNTY_COL_INDEX]?.Value.TrimStart(',').Trim('\"').Trim();
-                        var city    = regExCollections[CITY_COL_INDEX]?.Value.TrimStart(',').Trim();
-                        var zipcode = regExCollections[ZIP_COL_INDEX]?.Value.TrimStart(',').Trim();
-
-                        if( Convert.ToInt32(decomm) == 1)
+                        if ( Convert.ToInt32(decomm) == 1)
                         {
                             var infoStr = $"Information - Record Decomm'd ( Type: {type} Decomm: {decomm} State: {state}, County:{county}, City: {city} , ZipCode: {zipcode})";
                             parsingLogWriter.WriteLine(infoStr);
                             returnValue = true;
                         }
                         else
-                        {
-                            
+                        {                            
                             if(string.IsNullOrEmpty(county))
                             {
                                 county = type;
@@ -75,7 +83,6 @@ namespace GeoDataBuilder
                                 var warnStr = $"Warning - Failed to Insert Record( Type: {type} Decomm: {decomm} State: {state}, County:{county}, City: {city} , ZipCode: {zipcode})";
                                 parsingLogWriter.WriteLine(warnStr);
                             }
-
                         }                        
                     }                   
                 }
