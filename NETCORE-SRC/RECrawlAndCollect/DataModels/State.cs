@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using System.IO;
 
 namespace DataModels
 {
@@ -37,11 +38,40 @@ namespace DataModels
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Unable to insert geoRecord {county}, {city},{zipcode}");
+                Console.WriteLine($"Unable to insert geoRecord {county}, {city},{zipcode} exception :{e.Message}");
             }
 
             return returnValue;
+        }
 
+        public bool GenerateCriteriaConfigurationTemplates(string fileprefix,string dir)
+        {
+            bool returnValue = false;
+
+            try
+            {
+                // Let us create a direcrtory strcture .. <dir>/<county>/<state>/<county>/<city>/<zipcode>               
+                var computedDir = Path.Combine(dir, Name);
+
+                if (CountyList.Count > 0)
+                {
+                    foreach (var kv in CountyList)
+                    {
+                        var county = kv.Key;
+                        var countyObject = kv.Value;
+                        Console.WriteLine($"Calling County  {county} to create configuration");
+                        var prefix = $"{fileprefix}_{county}";
+                        countyObject.GenerateCriteriaConfigurationTemplates(Name,prefix, computedDir);
+                    }
+                    returnValue = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Exception  While genrating config templates(Nation Object) {ex.Message}");
+            }
+
+            return returnValue;
         }
     }
 }

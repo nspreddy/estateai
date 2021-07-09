@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "GenerateConfigTemplate": {
+      "commandName": "Project",
+      "commandLineArgs": "-c geoDB.json",
+      "sqlDebugging": true
+    }
+  }
+}

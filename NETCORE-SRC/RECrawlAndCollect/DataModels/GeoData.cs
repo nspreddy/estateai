@@ -38,7 +38,7 @@ namespace DataModels
             {
                 if (!Nations.TryGetValue(code, out nation))
                 {
-                    nation = new Nation();
+                    nation = new Nation(code);
                     Nations.Add(code, nation);
                 }
             }
@@ -71,7 +71,12 @@ namespace DataModels
             return DefaultNation.InsertGeoRecord(state, county, city, zipcode);
         }
 
-        public static void WriteJsonToFile(string outputFile)
+        public static bool GenerateTemplateConfigurationFiles(string prefix, string dir)
+        {
+            return DefaultNation.GenerateCriteriaConfigurationTemplates(prefix, dir);
+        }
+
+        public static void WriteGeoDBToJsonToFile(string outputFile)
         {
             try
             {
@@ -90,8 +95,9 @@ namespace DataModels
             }
         }
 
-        public static void LoadGeoDBFromJsonFile(string jsonFileName)
+        public static bool LoadGeoDBFromJsonFile(string jsonFileName)
         {
+            bool returnValue = false;
             try
             {
                 using (StreamReader file = File.OpenText(jsonFileName))
@@ -101,6 +107,7 @@ namespace DataModels
                     if (nationData != null)
                     {
                         Instance.UpsertNationData(DEFAULT_NATION, nationData);
+                        returnValue = true;
                     }
                 }
             }
@@ -108,8 +115,9 @@ namespace DataModels
             {
                 Console.WriteLine($" Failed to Write to file {jsonFileName}, exception: {ex.Message}");
             }
-
+            return returnValue;
         }
+
         #endregion
     }
 }

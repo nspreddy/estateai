@@ -136,7 +136,7 @@ namespace GeoDataBuilder
                         Console.WriteLine(outputStr);
                     }
                     // Time to write File with JSON data
-                    GeoData.WriteJsonToFile(outputFileName);
+                    GeoData.WriteGeoDBToJsonToFile(outputFileName);
                     returnVal = true;
                 }
                 catch (Exception ex)

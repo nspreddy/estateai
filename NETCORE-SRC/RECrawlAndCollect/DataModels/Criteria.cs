@@ -9,6 +9,17 @@ namespace DataModels
 {
     public class Criteria
     {
+        public const string SCOPE_COUNTY = "County";
+        public const string SCOPE_CITY   = "City";
+        public const string SCOPE_ZIP    = "Zip";
+
+        public const string PROP_SFR   = "SFR";
+        public const string PROP_TH    = "TOWNHOME";
+        public const string PROP_CONDO = "CONDO";
+        public const string PROP_LAND  = "LAND";
+
+
+
         [JsonProperty(PropertyName = "State")]
         public string State { get; set; }
 
@@ -47,5 +58,27 @@ namespace DataModels
 
         [JsonProperty(PropertyName = "YearBuilt")]
         public int YearBuilt { get; set; }
+
+        public Criteria()
+        {
+
+        }
+        public void GenerateRandomData( string state, string scopetype, string scopename,string propType)
+        {
+            var rnd = new Random();
+            State = state;
+            ScopeType = scopetype;
+            ScopeName = scopename;
+            PropertyType = propType;
+            WalkScore = rnd.Next(0, 100);
+            CommuteScore = rnd.Next(0, 100);
+            TransitScore = rnd.Next(0, 100);
+            HOAMax = rnd.Next(0, 350);
+            SqftMin = rnd.Next(0, 1000);
+            MinBeds = rnd.Next(2, 5);
+            MinBaths = rnd.Next(2, 4);
+            ParkingSpots = rnd.Next(1,3);
+            YearBuilt = rnd.Next(2000, 2022);
+        }
     }
 }
