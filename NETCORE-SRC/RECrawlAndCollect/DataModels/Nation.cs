@@ -27,7 +27,6 @@ namespace DataModels
         public bool InsertGeoRecord(string state, string county, string city, string zipcode)
         {
             bool returnValue = false;
-
             try
             {
                 if (!string.IsNullOrEmpty(state) && !string.IsNullOrEmpty(county) && !string.IsNullOrEmpty(city) && !string.IsNullOrEmpty(zipcode))
@@ -45,14 +44,12 @@ namespace DataModels
             {
                 Console.WriteLine($"Unable to insert geoRecord {state}, {county}, {city},{zipcode} exception :{e.Message}");
             }
-
             return returnValue;
         }
 
         public bool GenerateCriteriaConfigurationTemplates(string fileprefix,string dir)
         {
             bool returnValue = false;
-
             try
             {
                 // Let us create a direcrtory strcture .. <dir>/<county>/<state>/<county>/<city>/<zipcode>               
