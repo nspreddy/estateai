@@ -6,10 +6,16 @@ namespace CrawlXMLFiles
 {
     class CrawlXmlsFilesMain
     {
+
         private const string STATEOPTION = "-s|--state <value>"; // "ALL" for all states
         private const string ALLSTATES = "ALL";
         private const string GEODBFILE = "-g|--geodb <value>";
         private const string OUTPUTDIROPTION = "-d|--dir <value>";
+
+        private const string CRAWL_TYPE = "-t|--type <value>";  // posiisble value LIST or STATS or ALL
+        public const string CRAWL_ALL = "all";
+        public const string CRAWL_LIST = "list";
+        public const string CRAWL_STATS = "stats";
 
         private const string HELP = "-? | -h | --help";
 
@@ -34,7 +40,8 @@ namespace CrawlXMLFiles
             #endregion
 
             #region OPTIONS_ACTIONS
-            var stateCodesOption = app.Option(STATEOPTION, "Configuration file(CSV)", CommandOptionType.MultipleValue);
+            var stateCodesOption = app.Option(STATEOPTION, "StateCode", CommandOptionType.MultipleValue);
+            var CrawlTypeOption  = app.Option(CRAWL_TYPE, "CrawlType Option", CommandOptionType.SingleValue);
             var outputDirOption  = app.Option(OUTPUTDIROPTION, "OutPut DIR", CommandOptionType.SingleValue);
             var geoCfgFileOption = app.Option(GEODBFILE, "geo Config file", CommandOptionType.SingleValue);
 
@@ -74,10 +81,16 @@ namespace CrawlXMLFiles
                                     }
                                 }
 
+                                string crawlType = CRAWL_ALL;
+                                if (CrawlTypeOption.HasValue())
+                                {
+                                    crawlType = CrawlTypeOption.Value()?.Trim().ToLower();
+                                }
+
                                 if(allStates)
                                 {
                                     // call for all states
-                                    if(!crawlXmlAndSave.CrawlAllStates())
+                                    if(!crawlXmlAndSave.CrawlAllStates(crawlType))
                                     {
                                         Console.WriteLine($"Failed to Crawl All States");
                                     }
@@ -86,7 +99,7 @@ namespace CrawlXMLFiles
                                 {
                                     foreach (var stateCode in stateCodes)
                                     {
-                                        if(!crawlXmlAndSave.CrawlSpecificState(stateCode))
+                                        if(!crawlXmlAndSave.CrawlSpecificState(stateCode, crawlType))
                                         {
                                             Console.WriteLine($"Failed to Crawl {stateCode}");
                                         }

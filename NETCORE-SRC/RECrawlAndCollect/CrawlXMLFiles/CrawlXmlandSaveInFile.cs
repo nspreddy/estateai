@@ -17,7 +17,7 @@ namespace CrawlXMLFiles
             OutputDir = ourDir;
         }
 
-        public bool CrawlAllStates()
+        public bool CrawlAllStates(string crawlType)
         {
             bool returnValue = false;
 
@@ -28,7 +28,7 @@ namespace CrawlXMLFiles
                 {
                     foreach( var stateCode in statesList)
                     {
-                        CrawlSpecificState(stateCode);
+                        CrawlSpecificState(stateCode, crawlType);
                     }
                 }
                 else
@@ -45,7 +45,7 @@ namespace CrawlXMLFiles
 
         }
 
-        public bool CrawlSpecificState(string stateCode)
+        public bool CrawlSpecificState(string stateCode, string crawlType)
         {
             bool returnValue = false;
 
@@ -54,11 +54,35 @@ namespace CrawlXMLFiles
                 var stateObject = GeoData.DefaultNation.GetState(stateCode);
                 if( stateObject != null)
                 {
+                    bool crawlListings = false;
+                    bool crawlStats = false;
+
+                    switch (crawlType)
+                    {
+                        case CrawlXmlsFilesMain.CRAWL_ALL:
+                            crawlListings = true;
+                            crawlStats = true;
+                            break;
+                        case CrawlXmlsFilesMain.CRAWL_STATS:
+                            crawlStats = true;
+                            break;
+                        case CrawlXmlsFilesMain.CRAWL_LIST:
+                            crawlListings = true;
+                            break;
+
+                    }
                     var nation = GeoData.DefaultNation.Name;
-                    CrawlAndSave(nation, stateObject, SALE_LISTINGS_PREFIX);                    
-                    CrawlAndSave(nation, stateObject, COUNTY_STATS_PREFIX);
-                    CrawlAndSave(nation, stateObject, CITY_STATS_PREFIX);
-                    CrawlAndSave(nation, stateObject, ZIPCODE_STATS_PREFIX);
+                    if (crawlListings)
+                    {
+                        CrawlAndSave(nation, stateObject, SALE_LISTINGS_PREFIX);
+                    }
+
+                    if (crawlStats)
+                    {
+                        CrawlAndSave(nation, stateObject, COUNTY_STATS_PREFIX);
+                        CrawlAndSave(nation, stateObject, CITY_STATS_PREFIX);
+                        CrawlAndSave(nation, stateObject, ZIPCODE_STATS_PREFIX);
+                    }
                     returnValue = true;
                 }
 
@@ -71,7 +95,8 @@ namespace CrawlXMLFiles
             return returnValue;
         }
 
-        #region PRIVATE_HELPERS
+        #region PRIVATE_HELPERS       
+
         private const string SALE_LISTINGS_PREFIX = "SaleListings";
         private const string COUNTY_STATS_PREFIX = "CountyStats";
         private const string CITY_STATS_PREFIX = "CityStats";
