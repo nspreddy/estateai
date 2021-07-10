@@ -42,3 +42,6 @@ vendor
 /NETCORE-SRC/RECrawlAndCollect/.vs/RECrawlAndCollect/v16/.suo
 /NETCORE-SRC/RECrawlAndCollect/GeoDataBuilder/obj
 /NETCORE-SRC/RECrawlAndCollect/GenerateConfigTemplate/obj
+/NETCORE-SRC/RECrawlAndCollect/CrawlProperties/obj
+/NETCORE-SRC/RECrawlAndCollect/CrawlStats/obj
+/NETCORE-SRC/RECrawlAndCollect/CrawlXMLFiles/obj

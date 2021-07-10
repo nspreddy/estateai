@@ -86,7 +86,7 @@ namespace DataModels
 
                 // Write to JSON File. 
                 string jsonPayload = JsonConvert.SerializeObject(crawlCfg, Formatting.Indented);
-                JsonFileReadWriteUtil.WriteJsonToFile(dir, filename, jsonPayload);
+                FileReadWriteUtil.WriteToFile(dir, filename, jsonPayload);
 
             }
             catch (Exception ex)

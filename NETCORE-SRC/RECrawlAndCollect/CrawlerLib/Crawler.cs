@@ -1,4 +1,5 @@
 ﻿using System;
+using CommonAndUtils;
 
 namespace CrawlerLib
 {
@@ -23,6 +24,26 @@ namespace CrawlerLib
                 default:
                     break;
             }
+        }
+
+        public bool CrawlAndSavePayload( string url, string filepath)
+        {
+            bool returnValue = false;
+
+            try
+            {
+                var crawledDoc = CrawlUtils.getHtmlDocFromUrl(url);
+                if( crawledDoc != null)
+                {                   
+                    crawledDoc.Save(filepath);
+                }
+
+            }catch( Exception ex)
+            {
+                Console.WriteLine($" Unbale to either Crawl {url} or save File @ {filepath}, exception: {ex.Message}");
+            }
+
+            return returnValue;
         }
 
         public bool IsReady()

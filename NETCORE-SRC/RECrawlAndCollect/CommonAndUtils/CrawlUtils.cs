@@ -38,7 +38,7 @@ namespace CommonAndUtils
             httpClient.DefaultRequestHeaders.AcceptEncoding.TryParseAdd(ENCODING_OPTION);
         }
 
-        public static HtmlDocument getHtmlDocFromUrlAsync(String url)
+        public static HtmlDocument getHtmlDocFromUrl(String url)
         {
             HtmlDocument Doc = null;
             try

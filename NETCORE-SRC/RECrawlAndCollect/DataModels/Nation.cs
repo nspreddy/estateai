@@ -24,6 +24,20 @@ namespace DataModels
             Name = name;
         }
 
+        public List<string> GetListOfStates()
+        {
+            return StatesList.Keys.ToList();
+        }
+
+        public State GetState( string Code)
+        {
+            if( StatesList.TryGetValue(Code, out State state))
+            {
+                return state;
+            }
+            return null;
+        }
+
         public bool InsertGeoRecord(string state, string county, string city, string zipcode)
         {
             bool returnValue = false;
