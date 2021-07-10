@@ -36,6 +36,7 @@ namespace CrawlerLib
                 if( crawledDoc != null)
                 {                   
                     crawledDoc.Save(filepath);
+                    returnValue = true;
                 }
 
             }catch( Exception ex)
