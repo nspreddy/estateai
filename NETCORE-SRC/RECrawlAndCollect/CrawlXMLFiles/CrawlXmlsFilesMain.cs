@@ -75,7 +75,8 @@ namespace CrawlXMLFiles
                                 //  Let Start Crawling  for XML Files.
                                 foreach( var stateCode in stateCodes)
                                 {
-                                    if( stateCode.Trim().ToLower()== ALLSTATES)
+                                    // State codes are always given in upper.
+                                    if( stateCode.Trim().ToUpper() == ALLSTATES)
                                     {
                                         allStates = true;
                                     }
