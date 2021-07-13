@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.Extensions.CommandLineUtils;
 using DataModels;
+using CrawlerLib;
 
 namespace CrawlXMLFiles
 {
@@ -71,9 +72,8 @@ namespace CrawlXMLFiles
                             {
                                 bool allStates = false;
                                 var crawlXmlAndSave = new CrawlXmlandSaveInFile(outputDir);
-
                                 //  Let Start Crawling  for XML Files.
-                                foreach( var stateCode in stateCodes)
+                                foreach ( var stateCode in stateCodes)
                                 {
                                     // State codes are always given in upper.
                                     if( stateCode.Trim().ToUpper() == ALLSTATES)
@@ -106,7 +106,11 @@ namespace CrawlXMLFiles
                                         }
                                     }
                                 }
-
+                                // Queued all the work, let us kick off Threads to do their job. 
+                                CrawlerFramework.KickoffJobAgents();
+                                // Wait for all the work to be finished by Threads.
+                                CrawlerFramework.WaitForAllJobstoComplete();
+                                Console.WriteLine(" All Jobs in queue processed, hence exiting");
                             }
                             else
                             {

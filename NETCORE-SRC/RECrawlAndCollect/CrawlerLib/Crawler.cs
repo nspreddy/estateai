@@ -3,12 +3,13 @@ using CommonAndUtils;
 
 namespace CrawlerLib
 {
-    public class Crawler
+    internal  class Crawler
     {
         private const string ZILLOW = "www.zillow.com";
         private const string REDFIN = "www.redfin.com";
-        public void CrawlUrl(string url)
+        internal  bool  CrawlUrl(string url)
         {
+            bool returnValue = false; ;
             var uri = new Uri(url);
 
             switch (uri.Host)
@@ -16,17 +17,27 @@ namespace CrawlerLib
                 case ZILLOW:
                     var crawler = new ZillowCrawler();
                     crawler.CrawlProperties(uri);
+                    returnValue = true;
                     break;
                 case REDFIN:
                     RedfinCrawler redfinCrawler = new RedfinCrawler();
                     redfinCrawler.CrawlProperties(uri);
+                    returnValue = true;
                     break;
                 default:
                     break;
             }
+            return returnValue;
         }
 
-        public bool CrawlAndSavePayload( string url, string filepath)
+
+
+        internal bool CrawlRedfinXMLContent(string url, string filepath)
+        {
+            return CrawlAndSavePayload(url, filepath);
+        }
+
+        private bool CrawlAndSavePayload( string url, string filepath)
         {
             bool returnValue = false;
 
@@ -46,10 +57,6 @@ namespace CrawlerLib
 
             return returnValue;
         }
-
-        public bool IsReady()
-        {
-            return true;
-        }
+       
     }
 }

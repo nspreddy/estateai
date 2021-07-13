@@ -19,15 +19,21 @@ namespace RECrawlAndCollect
             }
             else
             {
-                Crawler crawlerObject = new Crawler();
-                if (crawlerObject.IsReady())
+                foreach (var url in urls)
                 {
-                    foreach (var url in urls)
-                    {
-                        crawlerObject.CrawlUrl(url);
-                    }
-                    returnValue = true;
-                }               
+                    CrawlerFramework.QueueCrawlURLsJob(url);
+                }
+
+                /*
+                Crawler crawlerObject = new Crawler();
+                foreach (var url in urls)
+                {
+                    crawlerObject.CrawlUrl(url);
+                }*/
+                CrawlerFramework.KickoffJobAgents();
+                CrawlerFramework.WaitForAllJobstoComplete();
+                returnValue = true;
+         
             }
             return returnValue;
         }

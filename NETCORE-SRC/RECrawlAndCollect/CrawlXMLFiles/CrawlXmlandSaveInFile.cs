@@ -128,8 +128,11 @@ namespace CrawlXMLFiles
                 if (!string.IsNullOrEmpty(url2Crawl))
                 {
                     var filePath = GetFullFilePath(nation, stateObject.Name, prefix);
+
+                    returnValue = CrawlerFramework.QueueCrawlRedfinXMLContentJob(url2Crawl, filePath);
+                    /*
                     var crawler = new Crawler();
-                    returnValue = crawler.CrawlAndSavePayload(url2Crawl, filePath);
+                    returnValue = crawler.CrawlRedfinXMLContent(url2Crawl, filePath);*/
                     if(!returnValue)
                     {
                         Console.WriteLine($"Unable to Crawl {url2Crawl} for {prefix}");
