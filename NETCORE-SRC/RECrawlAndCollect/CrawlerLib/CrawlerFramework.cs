@@ -11,9 +11,12 @@ namespace CrawlerLib
 {
     public class CrawlerFramework
     {
-        private const int MIN_THREAD_COUNT = 5;
-        private const int INITIAL_COUNT_DOWN_COUNT = 1;
-        private static CountdownEvent cde = new CountdownEvent(INITIAL_COUNT_DOWN_COUNT);
+
+
+        public static int JOBS_IN_QUEUE { get { return JobsQueued; }  }
+        public static int JOBS_PASSED { get { return JobsCompletedWithSuccess;} }
+        public static int JOBS_FAILED { get { return JobsCompletedWithFailure; } }
+
         public static bool KickoffJobAgents(int minThreadCount= MIN_THREAD_COUNT)
         {
             bool returnValue = false;
@@ -46,46 +49,52 @@ namespace CrawlerLib
 
         public static bool QueueCrawlRedfinXMLContentJob(string url, string filepath)
         {
-            ChannelMessage message = new ChannelMessage();
-
-            message.Action = ChannelMessage.ActionType.CRAWL_REDFIN_XMLDATA;
-            message.Url = url;
-            message.Payload = filepath;
-            cde.AddCount(1);
-            var writeTask = ChannelManager.WriteMessageFromChannelAsync(ChannelManager.Crawler_Queue, message);
-            if (writeTask == null)
-            {
-                cde.Signal();// since we failed to queue, hence decrement this
-                return false;
-            }
-            else
-            {
-                return writeTask.Result;
-            }
+            return SubmitCrawlJob(url, ChannelMessage.ActionType.CRAWL_REDFIN_XMLDATA, filepath);            
         }
 
         public static bool QueueCrawlURLsJob(string url)
         {
-            ChannelMessage message = new ChannelMessage();
-
-            message.Action = ChannelMessage.ActionType.CRAWL_SAVE;
-            message.Url = url;
-            message.Payload = null;
-            cde.AddCount(1);
-            var writeTask = ChannelManager.WriteMessageFromChannelAsync(ChannelManager.Crawler_Queue, message);
-            if (writeTask == null)
-            {
-                cde.Signal();// since we failed to queue, hence decrement this
-                return false;
-            }
-            else
-            {
-                return writeTask.Result;
-            }
+            return SubmitCrawlJob(url, ChannelMessage.ActionType.CRAWL_SAVE, null);            
         }
 
+        #region PRIVATE_MEMBERS
 
-        #region PRIVATE_METHODS
+        private const int MIN_THREAD_COUNT = 5;
+        private const int INITIAL_COUNT_DOWN_COUNT = 1;
+        private static CountdownEvent cde = new CountdownEvent(INITIAL_COUNT_DOWN_COUNT);
+
+        private static int JobsQueued = 0;
+        private static int JobsCompletedWithSuccess = 0;
+        private static int JobsCompletedWithFailure = 0;
+
+        private static bool SubmitCrawlJob(string url,ChannelMessage.ActionType action,object payload)
+        { 
+            bool returnValue = false;
+            try
+            {
+                cde.AddCount(1);
+                ChannelMessage message = new ChannelMessage();
+                message.Action = action;
+                message.Url = url;
+                message.Payload = payload;
+                message.ID = Guid.NewGuid();
+                var writeTask = ChannelManager.WriteMessageFromChannelAsync(ChannelManager.Crawler_Queue, message);
+                if (writeTask == null)
+                {
+                    cde.Signal();// since we failed to queue, hence decrement this
+                }
+                else
+                {
+                    IncrementJobQueued();
+                    returnValue= writeTask.Result;
+                }
+            }catch(Exception ex)
+            {
+                cde.Signal();
+                Console.WriteLine($"Exception while Queueing Message to process, {ex.Message}");
+            }
+            return returnValue;
+        }
         private static void CrawlerJobAgent( object channelNameToListen)
         {
             string channelName = channelNameToListen as string;
@@ -104,6 +113,15 @@ namespace CrawlerLib
                         if (message != null)
                         {
                             var returnValue= ProcessMessage(message);
+                            if (returnValue)
+                            {
+                                IncrementJobsCompletedWithSucess();
+                            }
+                            else
+                            {
+                                IncrementJobsCompletedWithFailure();
+                            }
+                            
                             Console.WriteLine($"Job Status for Job ID: {message.ID}, Status: {returnValue}");
                             cde.Signal();
                         }
@@ -148,6 +166,22 @@ namespace CrawlerLib
             Console.WriteLine($"Job Status: Msg ID: { message.ID}, {returnValue}");
             return returnValue;
         }
+
+        private static void IncrementJobQueued()
+        {
+            Interlocked.Increment(ref JobsQueued);
+        }
+
+        private static void IncrementJobsCompletedWithFailure()
+        {
+            Interlocked.Increment(ref JobsCompletedWithFailure);
+        }
+
+        private static void IncrementJobsCompletedWithSucess()
+        {
+            Interlocked.Increment(ref JobsCompletedWithSuccess);            
+        }
+
 
         private static bool CrawlRedfinXMLData(ChannelMessage message)
         {

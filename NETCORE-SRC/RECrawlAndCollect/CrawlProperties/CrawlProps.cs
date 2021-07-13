@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace CrawlStats
+namespace CrawlProperties
 {
-    class Program
+    class CrawlProps
     {
         static void Main(string[] args)
         {

@@ -85,11 +85,12 @@ namespace DataModels
         {
             try
             {
-                var crawlCfg = new CrawlConfig();
-                crawlCfg.GenerateRandomData(state, Criteria.SCOPE_CITY, Name);
+                var processCfg = new ProcessorConfig();
+                var jobName = $"Job_{state}_City_{Name}";
+                processCfg.GenerateRandomData(state, Criteria.SCOPE_CITY, Name,jobName);
 
                 // Write to JSON File. 
-                string jsonPayload = JsonConvert.SerializeObject(crawlCfg, Formatting.Indented);
+                string jsonPayload = JsonConvert.SerializeObject(processCfg, Formatting.Indented);
                 FileReadWriteUtil.WriteToFile(dir, filename, jsonPayload);
 
             }

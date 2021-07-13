@@ -6,8 +6,8 @@ namespace GenerateConfigTemplate
 {
     class Program
     {
-        private const string CFGFILEOPTION = "-c|--file <value>";
-        private const string OUTPUTFILEOPTION = "-d|--dir <value>";
+        private const string CFGFILEOPTION = "-g|--geodb <value>";
+        private const string OUTPUTDIROPTION = "-d|--dir <value>";
 
         private const string HELP = "-? | -h | --help";
 
@@ -33,26 +33,30 @@ namespace GenerateConfigTemplate
 
             #region OPTIONS_ACTIONS
             var configFileOption = app.Option(CFGFILEOPTION, "Configuration file(CSV)", CommandOptionType.SingleValue);
-            var outputDirOption  = app.Option(OUTPUTFILEOPTION, "OutPut DIR", CommandOptionType.SingleValue);
+            var outputDirOption  = app.Option(OUTPUTDIROPTION, "OutPut DIR", CommandOptionType.SingleValue);
 
             #endregion
 
             #region PROCESSING_CODE
             app.OnExecute(() =>
             {
-                string outputFile = "";
                 int returnVal = 0;
                 if (configFileOption.HasValue())
                 {
                     var configFile = configFileOption.Value();
-                    Console.WriteLine($"Parsing file {configFile} for Geo Data nad output will be written to {outputFile}");
+                    var dirToSave = outputDirOption.Value();
+                    if(string.IsNullOrEmpty(dirToSave))
+                    {
+                        dirToSave = ".";
+                    }
+                    Console.WriteLine($"Parsing file {configFile} for Geo Data nad output will be written to Directory {dirToSave}");
                     if(!string.IsNullOrEmpty(configFile))
                     {
                         // Let us load it up and generate teamplate configurations. 
                         if ( GeoData.LoadGeoDBFromJsonFile(configFile))
                         {
                             // Let us generate Configuration files.
-                            GeoData.GenerateTemplateConfigurationFiles("test", "testDataDir");
+                            GeoData.GenerateTemplateConfigurationFiles("Tmpl", dirToSave);
                         }
                         else
                         {

@@ -2,7 +2,7 @@
   "profiles": {
     "GenerateConfigTemplate": {
       "commandName": "Project",
-      "commandLineArgs": "-c geoDB.json",
+      "commandLineArgs": "-g geoDB.json -d testDir1",
       "sqlDebugging": true
     }
   }

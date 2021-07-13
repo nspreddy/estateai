@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CommonAndUtils;
 using Newtonsoft.Json;
 using System.IO;
 
@@ -55,12 +56,15 @@ namespace DataModels
 
                 if (CountyList.Count > 0)
                 {
+                    // Let us generate CrawlConfiguraions First
+                    var filename = $"CrawlConfig_{fileprefix}.json";
+                    GenerateCrawlConfigTempl(computedDir, filename);
                     foreach (var kv in CountyList)
                     {
                         var county = kv.Key;
                         var countyObject = kv.Value;
                         Console.WriteLine($"Calling County  {county} to create configuration");
-                        var prefix = $"{fileprefix}_{county}";
+                        var prefix = $"ProcessorConfig_{fileprefix}_{county}";
                         countyObject.GenerateCriteriaConfigurationTemplates(Name,prefix, computedDir);
                     }
                     returnValue = true;
@@ -72,6 +76,55 @@ namespace DataModels
             }
 
             return returnValue;
+        }
+
+        private const int MAX_RECORDS = 3; 
+        // generate crawl confir (property or Stats.. )
+        private void GenerateCrawlConfigTempl(string dir, string filename)
+        {
+            try
+            {
+                var crawlCfg = new CrawlerInputConfig();
+                crawlCfg.JobName = $"CrawlJob_{Name}";
+                // add some sample counties( max as 3)
+                if (CountyList.Count > 0)
+                {
+                    int i = 0;
+                    foreach (var countyKV in CountyList)
+                    {
+                        crawlCfg.CountyList.Add(countyKV.Key);
+                        var CountyObject = countyKV.Value;
+                        if (CountyObject != null)
+                        {
+                            // Let us fill few cities. 
+                            int j = 0;
+                            foreach (var cityKV in CountyObject.CityList)
+                            {
+                                crawlCfg.CityList.Add(cityKV.Key);
+                                var cityObject = cityKV.Value;
+                                int k = 0;
+                                foreach (var zipKV in cityObject.ZipCodeList)
+                                {
+                                    crawlCfg.ZipCodeList.Add(zipKV.Key);
+                                    ++k;
+                                    if (k >= MAX_RECORDS) break;
+                                }
+                                ++j;
+                                if (j >= MAX_RECORDS) break;
+                            }
+                        }
+                        ++i;
+                        if (i >= MAX_RECORDS) break;
+                    }
+                    // Write to JSON File. 
+                    string jsonPayload = JsonConvert.SerializeObject(crawlCfg, Formatting.Indented);
+                    FileReadWriteUtil.WriteToFile(dir, filename, jsonPayload);
+                }                
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine($"Exception  While Writing County Configuration to JSON file {ex.Message}");
+            }              
         }
 
 

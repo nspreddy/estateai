@@ -1,0 +1,11 @@
+{
+  "JobName": "SampleCrawler",
+  "County-List": [    
+  ],
+  "City-List": [
+    "Redmond"
+  ],
+  "ZipCode-List": [
+    "98075"
+  ]
+}

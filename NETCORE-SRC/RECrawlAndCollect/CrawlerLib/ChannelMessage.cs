@@ -9,7 +9,7 @@ namespace CrawlerLib
     internal class ChannelMessage
     {
          public enum ActionType { CRAWL_REDFIN_XMLDATA, CRAWL_PROP_EXTRACT, CRAWL_STATS, CRAWL_SAVE, PROCESS_RECORD};
-        public long ID { get; set; }
+        public Guid ID { get; set; }
         public  ActionType Action { get; set;}
 
         public string Url { get; set;}

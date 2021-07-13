@@ -7,15 +7,17 @@ using Newtonsoft.Json;
 
 namespace DataModels
 {
-    public class CrawlConfig
+    public class ProcessorConfig
     {
+        [JsonProperty(PropertyName ="JobName")]
+        public string JobName { get; set; }
         [JsonProperty(PropertyName ="geoCfg")]
         public string geoCfgFile { get; set;}
 
         [JsonProperty(PropertyName = "Critera-Data")]
         public List<Criteria> criterias { get; set; }
 
-        public CrawlConfig()
+        public ProcessorConfig()
         {
             criterias = new List<Criteria>();
         }
@@ -25,9 +27,10 @@ namespace DataModels
             criterias.Add(criteria);
         }
 
-        public void GenerateRandomData(string state, string scopetype, string scopename)
+        public void GenerateRandomData(string state, string scopetype, string scopename,string jobname)
         {
             geoCfgFile = "geoDB.json";
+            JobName = jobname;
             var criteria = new Criteria();
             criteria.GenerateRandomData(state, scopetype, scopename, Criteria.PROP_SFR);
             AddCriteria(criteria);
