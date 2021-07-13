@@ -8,7 +8,7 @@ using System.Threading.Channels;
 
 namespace CrawlerLib
 {
-    public class ChannelManager
+    internal class ChannelManager
     {
         public const string Crawler_Queue  = "CrawlerQueue";
         public const string Analyzer_Queue = "AnalyzerQueue";

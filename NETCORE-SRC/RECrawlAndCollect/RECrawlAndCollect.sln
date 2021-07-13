@@ -21,11 +21,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{46857497-1
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Crawlers", "Crawlers", "{B5A8AE86-BA68-4B4C-A864-070F759A5081}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrawlXMLFiles", "CrawlXMLFiles\CrawlXMLFiles.csproj", "{31006FA9-8051-4368-A16C-ED427D7AD8C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrawlXMLFiles", "CrawlXMLFiles\CrawlXMLFiles.csproj", "{31006FA9-8051-4368-A16C-ED427D7AD8C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrawlStats", "CrawlStats\CrawlStats.csproj", "{DBE349DD-4C8F-4B2F-8508-8FB7B33E002A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrawlStats", "CrawlStats\CrawlStats.csproj", "{DBE349DD-4C8F-4B2F-8508-8FB7B33E002A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrawlProperties", "CrawlProperties\CrawlProperties.csproj", "{6C5FF3DD-DDC7-4D58-BC77-36FABE5A19EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrawlProperties", "CrawlProperties\CrawlProperties.csproj", "{6C5FF3DD-DDC7-4D58-BC77-36FABE5A19EA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

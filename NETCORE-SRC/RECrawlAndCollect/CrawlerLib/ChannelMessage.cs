@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CrawlerLib
 {
-    public class ChannelMessage
+    internal class ChannelMessage
     {
          public enum ActionType { CRAWL_REDFIN_XMLDATA, CRAWL_PROP_EXTRACT, CRAWL_STATS, CRAWL_SAVE, PROCESS_RECORD};
         public long ID { get; set; }
