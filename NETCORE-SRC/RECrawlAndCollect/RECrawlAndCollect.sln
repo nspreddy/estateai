@@ -27,6 +27,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrawlStats", "CrawlStats\Cr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrawlProperties", "CrawlProperties\CrawlProperties.csproj", "{6C5FF3DD-DDC7-4D58-BC77-36FABE5A19EA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedfinUtils", "RedfinUtils\RedfinUtils.csproj", "{C0638AD1-2C99-410A-A83B-A3004A403D02}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,10 @@ Global
 		{6C5FF3DD-DDC7-4D58-BC77-36FABE5A19EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6C5FF3DD-DDC7-4D58-BC77-36FABE5A19EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6C5FF3DD-DDC7-4D58-BC77-36FABE5A19EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0638AD1-2C99-410A-A83B-A3004A403D02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0638AD1-2C99-410A-A83B-A3004A403D02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0638AD1-2C99-410A-A83B-A3004A403D02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0638AD1-2C99-410A-A83B-A3004A403D02}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -83,6 +89,7 @@ Global
 		{31006FA9-8051-4368-A16C-ED427D7AD8C6} = {B5A8AE86-BA68-4B4C-A864-070F759A5081}
 		{DBE349DD-4C8F-4B2F-8508-8FB7B33E002A} = {B5A8AE86-BA68-4B4C-A864-070F759A5081}
 		{6C5FF3DD-DDC7-4D58-BC77-36FABE5A19EA} = {B5A8AE86-BA68-4B4C-A864-070F759A5081}
+		{C0638AD1-2C99-410A-A83B-A3004A403D02} = {46857497-18FC-4FD3-BF7F-2830A8374BA3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {81B5BA8D-FD08-4751-9780-EA6795655DF3}

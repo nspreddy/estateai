@@ -61,9 +61,8 @@ namespace CrawlProperties
                         // Let us load it up and generate teamplate configurations. 
                         if (GeoData.LoadGeoDBFromJsonFile(geoConfigFile))
                         {
-
-                            if (configFileOption.HasValue()) {
-                                var crawlConfigFiles = configFileOption.Values;
+                            if (crawlConfigOption.HasValue()) {
+                                var crawlConfigFiles = crawlConfigOption.Values;
                                 if( crawlConfigFiles != null)
                                 {
                                     foreach(var crawlConfig in crawlConfigFiles)
@@ -132,16 +131,25 @@ namespace CrawlProperties
                     var stateObject = GeoData.DefaultNation.GetState(crawlConfig.State);
                     if( stateObject != null)
                     {
-                        // Let us get XML file path with URLs of properties to CRAWL.
-                        var xmlPropUrlFile = stateObject.GetFilePathWithRelativeDirPath(inputDir, State.SALE_LISTINGS_PREFIX);
+                        var proplistAndCrawlHelper = new PrepareListAndCrawl(crawlConfig,inputDir,outputDir);
+                        if(proplistAndCrawlHelper.PrepareList2Crawl())
+                        {
+                            // Now we have a list, let us crawl.
+                            // ToDO.. initiate crawler. 
+                            if (proplistAndCrawlHelper.StartCrawling())
+                            {
+                                Console.WriteLine("Sucessfully Crawled..");
+                            }
+                            else
+                            {
+                                Console.WriteLine("Failed to Crawl Content from shortlisted URLs");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Failed to prepare prop list to Crawl");
+                        }
 
-                        // convert counties to cities
-                        // merge city Dictionary
-                        // make list of zipcodes dictionary
-
-                        // get Short list URLs to crawl
-
-                        // Start Crawling them
                     }
                     else
                     {

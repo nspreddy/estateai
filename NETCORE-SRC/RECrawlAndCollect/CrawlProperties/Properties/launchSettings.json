@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "CrawlProperties": {
+      "commandName": "Project",
+      "commandLineArgs": "-g geoDB.json -c CrawlConfig_Tmpl_WA.json -i XmlContentDirForTest -d testDir",
+      "sqlDebugging": true
+    }
+  }
+}

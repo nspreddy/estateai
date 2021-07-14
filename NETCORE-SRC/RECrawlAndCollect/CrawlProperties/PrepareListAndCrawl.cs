@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DataModels;
 using CommonAndUtils;
+using RedfinUtils;
 
 namespace CrawlProperties
 {
@@ -16,14 +17,18 @@ namespace CrawlProperties
 
         private HashSet<string> Cities2Crawl { get; set; }
 
+        private HashSet<string> zipCodes2Crawl { get; set; }
+
         private HashSet<string> PropertyUrls2Crawl { get; set; }
 
         public PrepareListAndCrawl(CrawlerInputConfig crawlConfig, string inDir, string outDir)
         {
             crawlerConfig= crawlConfig;
-            XmlInDir  = inDir;
-            XmlOutDir = outDir;
-            Cities2Crawl = new HashSet<string>();
+            XmlInDir           = inDir;
+            XmlOutDir          = outDir;
+            Cities2Crawl       = new HashSet<string>();
+            zipCodes2Crawl     = new HashSet<string>();
+            PropertyUrls2Crawl = new HashSet<string>();
         }
 
         public bool PrepareList2Crawl()
@@ -33,9 +38,12 @@ namespace CrawlProperties
             var stateObject = GeoData.DefaultNation.GetState(crawlerConfig.State);
             if (stateObject != null)
             {
-                // convert counties to cities
+                // get cities and zipcodes in Hash set ( look up is faster.. O(1) incase of unique hash keys
                 UpdateHashSetWithCityList(crawlerConfig.CityList);
-                foreach( var county in crawlerConfig.CountyList)
+                UpdateHashSetWithZipCodeList(crawlerConfig.ZipCodeList);
+
+                // convert counties to cities
+                foreach ( var county in crawlerConfig.CountyList)
                 {
                     var listofCities = stateObject.GetListofCitiesInaCounty(county);
                     UpdateHashSetWithCityList(listofCities);
@@ -45,7 +53,11 @@ namespace CrawlProperties
                 var xmlPropUrlFile = stateObject.GetFilePathWithRelativeDirPath(XmlInDir, State.SALE_LISTINGS_PREFIX);
                 if (xmlPropUrlFile != null)
                 {
-
+                    returnValue = ComputeShortListofUrls(xmlPropUrlFile);
+                }
+                else
+                {
+                    Console.WriteLine($"Failed to get XMlFile with prop URLs");
                 }
 
             }
@@ -53,21 +65,51 @@ namespace CrawlProperties
             {
                 Console.WriteLine($"State:{crawlerConfig.State} not found in the given GeoData");
             }
+            return returnValue;
+        }
 
+        public bool StartCrawling()
+        {
+            bool returnValue = false;
 
             return returnValue;
         }
 
+        #region PRIVATE
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="cities"></param>
         private void  UpdateHashSetWithCityList( List<string> cities)
         {
             foreach( var city in cities)
             {
-                if ( !Cities2Crawl.Contains(city)){
-                    Cities2Crawl.Add(city);
+                var cityTrimmed = city.ToLower().Trim();
+                if ( !Cities2Crawl.Contains(cityTrimmed)){
+                    Cities2Crawl.Add(cityTrimmed);
+                }
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="zipCodeList"></param>
+        private void UpdateHashSetWithZipCodeList(List<string> zipCodeList)
+        {
+            foreach (var zipCode in zipCodeList)
+            {
+                var zipCodeTrimmed = zipCode.ToLower().Trim();
+                if (!zipCodes2Crawl.Contains(zipCodeTrimmed))
+                {
+                    zipCodes2Crawl.Add(zipCodeTrimmed);
                 }
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="url"></param>
         private void AddPropUrl( string url)
         {
             if(!PropertyUrls2Crawl.Contains(url))
@@ -75,7 +117,9 @@ namespace CrawlProperties
                 PropertyUrls2Crawl.Add(url);
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         private const string XPATH_PROP_LINKS = "//loc";
         private bool ComputeShortListofUrls(string xmlFilenameWithURLs)
         {
@@ -96,24 +140,56 @@ namespace CrawlProperties
                         {
                             var propLinkUrl = propNode.InnerText;
                             Console.WriteLine($"Prop-Link: {propLinkUrl}");
-                            // ToDo: Let us make sure the prop link City is in CityList
-                            // ToDo: if not ZipCodeList
-                            // ToDo: if present then Addprop2Crawl
-                            AddPropUrl(propLinkUrl);
+                            var urlKeyElements = RedfinPropURLUtils.ParseRedfinPropURL(propLinkUrl);
+                            if(urlKeyElements != null && urlKeyElements.Count > 0)
+                            {
+                                var City    = urlKeyElements[RedfinPropURLUtils.CITY];
+                                var ZipCode = urlKeyElements[RedfinPropURLUtils.ZIPCODE];
+                                bool isPropCrawlable = false;
+
+                                if (!string.IsNullOrEmpty(City) && Cities2Crawl.Contains(City))
+                                {
+                                    isPropCrawlable = true;
+                                }else if (!string.IsNullOrEmpty(ZipCode) && zipCodes2Crawl.Contains(ZipCode))
+                                {
+                                    isPropCrawlable = true;
+                                }
+
+                                if (isPropCrawlable)
+                                {
+                                    AddPropUrl(propLinkUrl);
+                                }
+                                else
+                                {
+                                    Console.WriteLine($"Not adding the URL {propLinkUrl}");
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine($"Not adding the URL {propLinkUrl} due to parsing Issues");
+                            }
+                            
                         }
-                        
+
                     }
+                    else
+                    {
+                        Console.WriteLine($"Unabel to get property URls from XML Content");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine($"Unbale to read XML file {xmlFilenameWithURLs}");
                 }
 
             }
             catch(Exception ex)
             {
-
+                Console.WriteLine($"Exception while reading/understanding  {xmlFilenameWithURLs}, exception: {ex.Message}");
             }
 
             return returnValue;
         }
-
-        
+        #endregion
     }
 }
