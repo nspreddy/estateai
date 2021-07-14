@@ -74,14 +74,14 @@ namespace CrawlXMLFiles
                     var nation = GeoData.DefaultNation.Name;
                     if (crawlListings)
                     {
-                        CrawlAndSave(nation, stateObject, SALE_LISTINGS_PREFIX);
+                        CrawlAndSave(nation, stateObject, State.SALE_LISTINGS_PREFIX);
                     }
 
                     if (crawlStats)
                     {
-                        CrawlAndSave(nation, stateObject, COUNTY_STATS_PREFIX);
-                        CrawlAndSave(nation, stateObject, CITY_STATS_PREFIX);
-                        CrawlAndSave(nation, stateObject, ZIPCODE_STATS_PREFIX);
+                        CrawlAndSave(nation, stateObject, State.COUNTY_STATS_PREFIX);
+                        CrawlAndSave(nation, stateObject, State.CITY_STATS_PREFIX);
+                        CrawlAndSave(nation, stateObject, State.ZIPCODE_STATS_PREFIX);
                     }
                     returnValue = true;
                 }
@@ -96,11 +96,11 @@ namespace CrawlXMLFiles
         }
 
         #region PRIVATE_HELPERS       
-
+        /*
         private const string SALE_LISTINGS_PREFIX = "SaleListings";
         private const string COUNTY_STATS_PREFIX = "CountyStats";
         private const string CITY_STATS_PREFIX = "CityStats";
-        private const string ZIPCODE_STATS_PREFIX = "ZipCodeStats";
+        private const string ZIPCODE_STATS_PREFIX = "ZipCodeStats";*/
 
 
         private bool CrawlAndSave(string nation,State stateObject,string prefix )
@@ -111,23 +111,24 @@ namespace CrawlXMLFiles
             {
                 switch (prefix)
                 {
-                    case SALE_LISTINGS_PREFIX:
+                    case State.SALE_LISTINGS_PREFIX:
                         url2Crawl = stateObject.SalesListUrl;
                         break;
-                    case COUNTY_STATS_PREFIX:
+                    case State.COUNTY_STATS_PREFIX:
                         url2Crawl = stateObject.CountyStatsUrl;
                         break;
-                    case CITY_STATS_PREFIX:
+                    case State.CITY_STATS_PREFIX:
                         url2Crawl = stateObject.CityStatsUrl;
                         break;
-                    case ZIPCODE_STATS_PREFIX:
+                    case State.ZIPCODE_STATS_PREFIX:
                         url2Crawl = stateObject.ZipCodeStatsUrl;
                         break;
                 }
 
                 if (!string.IsNullOrEmpty(url2Crawl))
                 {
-                    var filePath = GetFullFilePath(nation, stateObject.Name, prefix);
+                    //var filePath = GetFullFilePath(nation, stateObject.Name, prefix);
+                    var filePath = stateObject.GetFilePathWithHeadDir(OutputDir, prefix);
 
                     returnValue = CrawlerFramework.QueueCrawlRedfinXMLContentJob(url2Crawl, filePath);
                     /*
@@ -141,6 +142,8 @@ namespace CrawlXMLFiles
             }
             return returnValue;
         }
+
+        /*
         private string GetFullFilePath(string nation, string state, string filePrefix)
         {
             var filename = $"{filePrefix}_{state}.xml";
@@ -151,7 +154,7 @@ namespace CrawlXMLFiles
                 Directory.CreateDirectory(dir);
             }
             return Path.Combine(dir, filename);
-        }
+        }*/
         #endregion
     }
 }

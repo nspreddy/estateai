@@ -48,7 +48,7 @@ namespace DataModels
                     State stateObject;
                     if (!StatesList.TryGetValue(state, out stateObject))
                     {
-                        stateObject = new State(state);
+                        stateObject = new State(state,this);
                         StatesList[state] = stateObject;
                     }
                     returnValue = stateObject.InsertGeoRecord(county, city, zipcode);

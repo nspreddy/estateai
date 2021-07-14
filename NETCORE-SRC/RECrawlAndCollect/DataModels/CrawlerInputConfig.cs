@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using System.IO;
 
 namespace DataModels
 {
@@ -11,6 +12,9 @@ namespace DataModels
     {
         [JsonProperty(PropertyName = "JobName")]
         public string JobName { get; set; }
+
+        [JsonProperty(PropertyName = "State")]
+        public string State { get; set; }
 
         [JsonProperty(PropertyName = "County-List")]
         public List<string> CountyList { get; set; }
@@ -26,6 +30,28 @@ namespace DataModels
             CountyList = new List<string>();
             CityList = new List<string>();
             ZipCodeList = new List<string>();
+        }
+
+        public static CrawlerInputConfig GetCrawlerConfigurationFromJsonFile(string configfile)
+        {
+            CrawlerInputConfig crawlConfig = null;
+
+            try
+            {
+                using (StreamReader file = File.OpenText(configfile))
+                {
+                    JsonSerializer serializer = new JsonSerializer();
+                    crawlConfig = (CrawlerInputConfig)serializer.Deserialize(file, typeof(CrawlerInputConfig));
+                    return crawlConfig;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($" Failed to Write to file {configfile}, exception: {ex.Message}");
+            }
+
+            return crawlConfig;
+
         }
     }
 }

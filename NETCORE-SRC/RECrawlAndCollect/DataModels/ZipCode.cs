@@ -13,10 +13,13 @@ namespace DataModels
         [JsonProperty(PropertyName = "zipcode")]
         public string Name { get; set; }
 
+        [JsonIgnore]
+        private City Parent { get; set; }
         public ZipCode() { }
-        public ZipCode(string name)
+        public ZipCode(string name, City city)
         {
             Name = name;
+            Parent = city;
         }
 
         public bool GenerateCriteriaConfigurationTemplates(string state,string fileprefix,string dir)

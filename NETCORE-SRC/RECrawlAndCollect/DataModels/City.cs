@@ -16,10 +16,14 @@ namespace DataModels
         [JsonProperty(PropertyName = "CityName")]
         public string Name { get; set; }
 
+        [JsonIgnore]
+        private County Parent { get;set;}
+
         public City() { }
-        public City(string name)
+        public City(string name, County county)
         {
             Name = name;
+            Parent = county;
         }
 
         public bool InsertGeoRecord(string zipcode)
@@ -32,7 +36,7 @@ namespace DataModels
 
                 if (!ZipCodeList.TryGetValue(zipcode, out zipObject))
                 {
-                    zipObject = new ZipCode(zipcode);
+                    zipObject = new ZipCode(zipcode,this);
                     ZipCodeList[zipcode] = zipObject;
                 }
                 returnValue = true;

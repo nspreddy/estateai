@@ -10,13 +10,17 @@ namespace DataModels
     {
         [JsonProperty(PropertyName = "City-Data")]
         public Dictionary<string, City> CityList = new Dictionary<string, City>();
+        
         [JsonProperty(PropertyName = "CountyName")]
         public string Name { get; set; }
 
+        [JsonIgnore]
+        private State Parent { get; set; }
         public County() { }
-        public County(string name)
+        public County(string name, State state)
         {
-            Name = name;
+            Name   = name;
+            Parent = state;
         }
 
         public bool InsertGeoRecord( string city, string zipcode)
@@ -29,7 +33,7 @@ namespace DataModels
 
                 if (!CityList.TryGetValue(city, out cityObject))
                 {
-                    cityObject = new City(city);
+                    cityObject = new City(city,this);
                     CityList[city] = cityObject;
                 }
                 returnValue = cityObject.InsertGeoRecord(zipcode);

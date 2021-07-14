@@ -11,15 +11,24 @@ namespace DataModels
 {
     public class State
     {
+        public const string SALE_LISTINGS_PREFIX = "SaleListings";
+        public const string COUNTY_STATS_PREFIX = "CountyStats";
+        public const string CITY_STATS_PREFIX = "CityStats";
+        public const string ZIPCODE_STATS_PREFIX = "ZipCodeStats";
+
         [JsonProperty(PropertyName = "County-Data")]
         public Dictionary<string,County> CountyList = new Dictionary<string,County>();
         [JsonProperty(PropertyName = "StateCode")]
         public string Name { get; set; }
 
+        [JsonIgnore]
+        private Nation Parent { get; set; }
+
         public State() { }
-        public State( string name)
+        public State( string name, Nation nation)
         {
-            Name = name;
+            Name   = name;
+            Parent = nation;
         }
 
         public bool InsertGeoRecord( string county, string city, string zipcode)
@@ -32,7 +41,7 @@ namespace DataModels
 
                 if (!CountyList.TryGetValue(county, out countyObject))
                 {
-                    countyObject = new County(county);
+                    countyObject = new County(county,this);
                     CountyList[county] = countyObject;
                 }
                 returnValue = countyObject.InsertGeoRecord(city,zipcode);
@@ -77,7 +86,35 @@ namespace DataModels
 
             return returnValue;
         }
+        /// <summary>
+        /// Get Path of the file name based on the scope/file prefix.
+        /// </summary>
+        /// <param name="outDir"></param>
+        /// <param name="filePrefix"></param>
+        /// <returns></returns>
+        public string GetFilePathWithHeadDir(string headDir, string filePrefix)
+        {
+            var filename = $"{filePrefix}_{Name}.xml";
+            var dateFolderName = DateTime.Now.ToString("yyyy_MM_dd");
+            var dir = Path.Combine(headDir, this.Parent.Name, Name, dateFolderName);
+            if (!Directory.Exists(dir))
+            {
+                Directory.CreateDirectory(dir);
+            }
+            return Path.Combine(dir, filename);
+        }
 
+        public string GetFilePathWithRelativeDirPath(string dirPath, string filePrefix)
+        {
+            var filename = $"{filePrefix}_{Name}.xml";            
+            if (!Directory.Exists(dirPath))
+            {
+                Directory.CreateDirectory(dirPath);
+            }
+            return Path.Combine(dirPath, filename);
+        }
+
+        #region PRIVATE
         private const int MAX_RECORDS = 3; 
         // generate crawl confir (property or Stats.. )
         private void GenerateCrawlConfigTempl(string dir, string filename)
@@ -86,6 +123,7 @@ namespace DataModels
             {
                 var crawlCfg = new CrawlerInputConfig();
                 crawlCfg.JobName = $"CrawlJob_{Name}";
+                crawlCfg.State = Name;
                 // add some sample counties( max as 3)
                 if (CountyList.Count > 0)
                 {
@@ -126,9 +164,9 @@ namespace DataModels
                 Console.WriteLine($"Exception  While Writing County Configuration to JSON file {ex.Message}");
             }              
         }
+        #endregion
 
-
-
+        #region URL_BASED_APIS
         // Crawl URLS
         // City Based Stats:  URL pattern by State:
         //   WA:  https://www.redfin.com/sitemap-xml/city_housing_market_WA_sitemap.xml.gz
@@ -211,5 +249,6 @@ namespace DataModels
         // https://www.redfin.com/newest_listings.xml
         // Gives properties across US.. (similar output as https://www.redfin.com/listings_MA_sitemap.xml)
 
+        #endregion
     }
 }
