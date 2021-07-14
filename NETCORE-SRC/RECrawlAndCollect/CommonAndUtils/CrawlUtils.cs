@@ -110,5 +110,25 @@ namespace CommonAndUtils
             }
             return Doc;
         }
+
+        public static HtmlDocument GethtmlDocFromXmlFile( string filepath)
+        {
+            HtmlDocument Doc = null;
+
+            try
+            {
+                string xmlText = File.ReadAllText(filepath);
+                if(!string.IsNullOrEmpty(xmlText))
+                {
+                    Doc = new HtmlDocument();
+                    Doc.LoadHtml(xmlText);
+                }
+
+            }catch(Exception ex)
+            {
+                Console.WriteLine($"Failed to read file:{filepath}, exception:{ex.Message}");
+            }
+            return Doc;
+        }
     }
 }

@@ -138,6 +138,10 @@ namespace CrawlProperties
                         // convert counties to cities
                         // merge city Dictionary
                         // make list of zipcodes dictionary
+
+                        // get Short list URLs to crawl
+
+                        // Start Crawling them
                     }
                     else
                     {

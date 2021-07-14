@@ -86,6 +86,27 @@ namespace DataModels
 
             return returnValue;
         }
+
+        public List<string> GetListofCitiesInaCounty(string county)
+        {
+            List<string> result = null;
+            try
+            {
+                County countyObject;
+
+                if (CountyList.TryGetValue(county, out countyObject))
+                {
+                  result = countyObject.CityList.Keys.ToList();
+                }
+                
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Unable to insert geoRecord {county}, Exception :{e.Message}");
+            }
+            return result;
+        }
+
         /// <summary>
         /// Get Path of the file name based on the scope/file prefix.
         /// </summary>
