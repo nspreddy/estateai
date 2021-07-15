@@ -31,13 +31,7 @@ namespace CrawlerLib
         }
 
 
-
-        internal bool CrawlRedfinXMLContent(string url, string filepath)
-        {
-            return CrawlAndSavePayload(url, filepath);
-        }
-
-        private bool CrawlAndSavePayload( string url, string filepath)
+        public bool CrawlUrlAndSavePayload( string url, string filepath)
         {
             bool returnValue = false;
 

@@ -47,9 +47,9 @@ namespace CrawlerLib
             }
         }
 
-        public static bool QueueCrawlRedfinXMLContentJob(string url, string filepath)
+        public static bool QueueCrawlUrAndSave2FileJob(string url, string filepath)
         {
-            return SubmitCrawlJob(url, ChannelMessage.ActionType.CRAWL_REDFIN_XMLDATA, filepath);            
+            return SubmitCrawlJob(url, ChannelMessage.ActionType.CRAWL_URL_SAVE2FILE, filepath);            
         }
 
         public static bool QueueCrawlURLsJob(string url)
@@ -152,14 +152,11 @@ namespace CrawlerLib
             {
                 case ChannelMessage.ActionType.CRAWL_PROP_EXTRACT:
                     break;
-                case ChannelMessage.ActionType.CRAWL_REDFIN_XMLDATA:
-                    returnValue = CrawlRedfinXMLData(message);
+                case ChannelMessage.ActionType.CRAWL_URL_SAVE2FILE:
+                    returnValue = CrawlURLsAndSave2File(message);
                     break;
                 case ChannelMessage.ActionType.CRAWL_STATS:
-                    break;
-                case ChannelMessage.ActionType.CRAWL_SAVE:
-                    returnValue=CrawlURLsAndSaveContent(message);
-                    break;
+                    break;                
                 case ChannelMessage.ActionType.PROCESS_RECORD:
                     break;
             }
@@ -183,7 +180,7 @@ namespace CrawlerLib
         }
 
 
-        private static bool CrawlRedfinXMLData(ChannelMessage message)
+        private static bool CrawlURLsAndSave2File(ChannelMessage message)
         {
             var returnValue = false;
             var redfinUrl = message.Url;
@@ -191,7 +188,7 @@ namespace CrawlerLib
             if( !string.IsNullOrEmpty(redfinUrl)  && !string.IsNullOrEmpty(filepath))
             {
                 var crawler = new Crawler();
-                returnValue = crawler.CrawlRedfinXMLContent(redfinUrl, filepath);
+                returnValue = crawler.CrawlUrlAndSavePayload(redfinUrl, filepath);
             }
             else
             {

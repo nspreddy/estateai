@@ -22,7 +22,18 @@ namespace DataModels
             Name   = name;
             Parent = state;
         }
+        public void ValidateParent(State state)
+        {
+            if (Parent == null)
+            {
+                Parent = state;
+            }
 
+            foreach( var kv in CityList)
+            {
+                kv.Value?.ValidateParent(this);
+            }
+        }
         public bool InsertGeoRecord( string city, string zipcode)
         {
             bool returnValue = false;

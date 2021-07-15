@@ -16,6 +16,10 @@ namespace DataModels
         public const string CITY_STATS_PREFIX = "CityStats";
         public const string ZIPCODE_STATS_PREFIX = "ZipCodeStats";
 
+        public const string META_DATA  = "MetaData";
+        public const string PROP_DATA  = "PropData";
+        public const string STATS_DATA = "StatsData";
+
         [JsonProperty(PropertyName = "County-Data")]
         public Dictionary<string,County> CountyList = new Dictionary<string,County>();
         [JsonProperty(PropertyName = "StateCode")]
@@ -29,6 +33,18 @@ namespace DataModels
         {
             Name   = name;
             Parent = nation;
+        }
+
+        public void ValidateParent(Nation nation)
+        {
+            if( Parent == null)
+            {
+                Parent = nation;
+            }
+            foreach( var kv in CountyList)
+            {
+                kv.Value?.ValidateParent(this);                
+            }
         }
 
         public bool InsertGeoRecord( string county, string city, string zipcode)
@@ -107,27 +123,24 @@ namespace DataModels
             return result;
         }
 
-        /// <summary>
-        /// Get Path of the file name based on the scope/file prefix.
-        /// </summary>
-        /// <param name="outDir"></param>
-        /// <param name="filePrefix"></param>
-        /// <returns></returns>
-        public string GetFilePathWithHeadDir(string headDir, string filePrefix)
+        public string GetFilePathForMetaData(string headDir,string filenameSuffix)
         {
-            var filename = $"{filePrefix}_{Name}.xml";
-            var dateFolderName = DateTime.Now.ToString("yyyy_MM_dd");
-            var dir = Path.Combine(headDir, this.Parent.Name, Name, dateFolderName);
-            if (!Directory.Exists(dir))
-            {
-                Directory.CreateDirectory(dir);
-            }
-            return Path.Combine(dir, filename);
+            return GetFilePathWithHeadDir(headDir, META_DATA, filenameSuffix);
         }
 
-        public string GetFilePathWithRelativeDirPath(string dirPath, string filePrefix)
+        public string GetFilePathForPropertyData(string headDir, string filenameSuffix)
         {
-            var filename = $"{filePrefix}_{Name}.xml";            
+            return GetFilePathWithHeadDir(headDir, META_DATA, filenameSuffix);
+        }
+
+        public string GetFilePathForStatsData(string headDir, string filenameSuffix)
+        {
+            return GetFilePathWithHeadDir(headDir, META_DATA, filenameSuffix);
+        }
+
+        public string GetFilePathWithRelativeDirPath(string dirPath, string fileSuffix)
+        {
+            var filename = $"{Name}_{fileSuffix}";            
             if (!Directory.Exists(dirPath))
             {
                 Directory.CreateDirectory(dirPath);
@@ -185,6 +198,25 @@ namespace DataModels
                 Console.WriteLine($"Exception  While Writing County Configuration to JSON file {ex.Message}");
             }              
         }
+
+        /// <summary>
+        /// Get Path of the file name based on the scope/file prefix.
+        /// </summary>
+        /// <param name="outDir"></param>
+        /// <param name="filePrefix"></param>
+        /// <returns></returns>
+        private string GetFilePathWithHeadDir(string headDir, string subdir, string filenameSuffix)
+        {
+            var filename = $"{Name}_{filenameSuffix}";
+            var dateFolderName = DateTime.Now.ToString("yyyy_MM_dd");
+            var dir = Path.Combine(headDir, this.Parent.Name, Name, dateFolderName, subdir);
+            if (!Directory.Exists(dir))
+            {
+                Directory.CreateDirectory(dir);
+            }
+            return Path.Combine(dir, filename);
+        }
+
         #endregion
 
         #region URL_BASED_APIS

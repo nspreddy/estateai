@@ -19,7 +19,7 @@ namespace CrawlProperties
 
         private HashSet<string> zipCodes2Crawl { get; set; }
 
-        private HashSet<string> PropertyUrls2Crawl { get; set; }
+        private Dictionary<string,string> PropertyUrls2Crawl { get; set; }
 
         public PrepareListAndCrawl(CrawlerInputConfig crawlConfig, string inDir, string outDir)
         {
@@ -28,7 +28,7 @@ namespace CrawlProperties
             XmlOutDir          = outDir;
             Cities2Crawl       = new HashSet<string>();
             zipCodes2Crawl     = new HashSet<string>();
-            PropertyUrls2Crawl = new HashSet<string>();
+            PropertyUrls2Crawl = new Dictionary<string, string>();
         }
 
         public bool PrepareList2Crawl()
@@ -50,7 +50,8 @@ namespace CrawlProperties
                 }
                 Console.WriteLine($"Cities total: {Cities2Crawl.Count()} read to Crawl");
                 // Let us get XML file path with URLs of properties to CRAWL.
-                var xmlPropUrlFile = stateObject.GetFilePathWithRelativeDirPath(XmlInDir, State.SALE_LISTINGS_PREFIX);
+                var fileSuffix = $"{State.SALE_LISTINGS_PREFIX}.xml";
+                var xmlPropUrlFile = stateObject.GetFilePathWithRelativeDirPath(XmlInDir,fileSuffix);
                 if (xmlPropUrlFile != null)
                 {
                     returnValue = ComputeShortListofUrls(xmlPropUrlFile);
@@ -71,9 +72,9 @@ namespace CrawlProperties
         public bool StartCrawling()
         {
             bool returnValue = false;
-            foreach( var url2Crawl in PropertyUrls2Crawl)
+            foreach( var url2CrawlKvPair in PropertyUrls2Crawl)
             {
-                Console.WriteLine($" Kicking off to Crawl {url2Crawl}");
+                Console.WriteLine($" Kicking off to Crawl {url2CrawlKvPair.Value}");
             }
 
             return returnValue;
@@ -114,11 +115,11 @@ namespace CrawlProperties
         /// 
         /// </summary>
         /// <param name="url"></param>
-        private void AddPropUrl( string url)
+        private void AddPropUrl( string key, string url)
         {
-            if(!PropertyUrls2Crawl.Contains(url))
+            if(!PropertyUrls2Crawl.ContainsKey(key))
             {
-                PropertyUrls2Crawl.Add(url);
+                PropertyUrls2Crawl.Add(key,url);
             }
         }
         /// <summary>
@@ -148,7 +149,8 @@ namespace CrawlProperties
                             if(urlKeyElements != null && urlKeyElements.Count > 0)
                             {
                                 var City    = urlKeyElements[RedfinPropURLUtils.CITY];
-                                var ZipCode = urlKeyElements[RedfinPropURLUtils.ZIPCODE];
+                                var ZipCode = urlKeyElements[RedfinPropURLUtils.ZIPCODE];                                
+
                                 bool isPropCrawlable = false;
 
                                 if (!string.IsNullOrEmpty(City) && Cities2Crawl.Contains(City))
@@ -161,7 +163,13 @@ namespace CrawlProperties
 
                                 if (isPropCrawlable)
                                 {
-                                    AddPropUrl(propLinkUrl);
+                                    // Let us create a Key                                   
+                                    var state = urlKeyElements[RedfinPropURLUtils.STATE];
+                                    var address = urlKeyElements[RedfinPropURLUtils.ADDRESS];
+                                    var Id = urlKeyElements[RedfinPropURLUtils.PROPID];
+
+                                    var propKey = $"{state}_{City}_{Id}_{address}";
+                                    AddPropUrl(propKey,propLinkUrl);
                                 }
                                 else
                                 {

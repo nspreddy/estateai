@@ -15,6 +15,7 @@ namespace RedfinUtils
         public const string STATE   = "State";
         public const string ZIPCODE = "ZipCode";
         public const string PROPID  = "PropID";
+        public const string ADDRESS = "ADDRESS";
         public const int SEGMENTS_IN_PROP_URL = 6;
         public static Dictionary<string,string> ParseRedfinPropURL(string url)
         {
@@ -31,6 +32,7 @@ namespace RedfinUtils
                     var city    = uri.Segments[2].TrimEnd('/').Trim().ToLower();
                     returnValue.Add(CITY, city);
                     var address = uri.Segments[3].TrimEnd('/').Trim();
+                    returnValue.Add(ADDRESS, address);
                     var tokens = address.Split('-');
                     if( tokens.Length > 0)
                     {
@@ -43,7 +45,6 @@ namespace RedfinUtils
                     // extract ID
                     var propId = uri.Segments[5].Trim();
                     returnValue.Add(PROPID, propId);
-
                 }
             }catch(Exception ex)
             {

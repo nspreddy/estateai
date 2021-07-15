@@ -71,17 +71,17 @@ namespace CrawlXMLFiles
                             break;
 
                     }
-                    var nation = GeoData.DefaultNation.Name;
+                    
                     if (crawlListings)
                     {
-                        CrawlAndSave(nation, stateObject, State.SALE_LISTINGS_PREFIX);
+                        CrawlAndSave(stateObject, State.SALE_LISTINGS_PREFIX);
                     }
 
                     if (crawlStats)
                     {
-                        CrawlAndSave(nation, stateObject, State.COUNTY_STATS_PREFIX);
-                        CrawlAndSave(nation, stateObject, State.CITY_STATS_PREFIX);
-                        CrawlAndSave(nation, stateObject, State.ZIPCODE_STATS_PREFIX);
+                        CrawlAndSave(stateObject, State.COUNTY_STATS_PREFIX);
+                        CrawlAndSave(stateObject, State.CITY_STATS_PREFIX);
+                        CrawlAndSave(stateObject, State.ZIPCODE_STATS_PREFIX);
                     }
                     returnValue = true;
                 }
@@ -96,14 +96,8 @@ namespace CrawlXMLFiles
         }
 
         #region PRIVATE_HELPERS       
-        /*
-        private const string SALE_LISTINGS_PREFIX = "SaleListings";
-        private const string COUNTY_STATS_PREFIX = "CountyStats";
-        private const string CITY_STATS_PREFIX = "CityStats";
-        private const string ZIPCODE_STATS_PREFIX = "ZipCodeStats";*/
 
-
-        private bool CrawlAndSave(string nation,State stateObject,string prefix )
+        private bool CrawlAndSave(State stateObject,string prefix )
         {
             bool returnValue = false;
             string url2Crawl = "";
@@ -128,12 +122,11 @@ namespace CrawlXMLFiles
                 if (!string.IsNullOrEmpty(url2Crawl))
                 {
                     //var filePath = GetFullFilePath(nation, stateObject.Name, prefix);
-                    var filePath = stateObject.GetFilePathWithHeadDir(OutputDir, prefix);
+                    var fileSuffix = $"{prefix}.xml";
+                    var filePath = stateObject.GetFilePathForMetaData(OutputDir, fileSuffix);
 
-                    returnValue = CrawlerFramework.QueueCrawlRedfinXMLContentJob(url2Crawl, filePath);
-                    /*
-                    var crawler = new Crawler();
-                    returnValue = crawler.CrawlRedfinXMLContent(url2Crawl, filePath);*/
+                    returnValue = CrawlerFramework.QueueCrawlUrAndSave2FileJob(url2Crawl, filePath);
+
                     if(!returnValue)
                     {
                         Console.WriteLine($"Unable to Crawl {url2Crawl} for {prefix}");
@@ -142,19 +135,7 @@ namespace CrawlXMLFiles
             }
             return returnValue;
         }
-
-        /*
-        private string GetFullFilePath(string nation, string state, string filePrefix)
-        {
-            var filename = $"{filePrefix}_{state}.xml";
-            var dateFolderName = DateTime.Now.ToString("yyyy_MM_dd");
-            var dir = Path.Combine(OutputDir, nation, state, dateFolderName);
-            if(!Directory.Exists(dir))
-            {
-                Directory.CreateDirectory(dir);
-            }
-            return Path.Combine(dir, filename);
-        }*/
+                
         #endregion
     }
 }

@@ -33,6 +33,7 @@ namespace DataModels
         {
             if( StatesList.TryGetValue(Code, out State state))
             {
+                state.ValidateParent(this);
                 return state;
             }
             return null;

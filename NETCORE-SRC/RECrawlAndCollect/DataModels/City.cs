@@ -25,6 +25,18 @@ namespace DataModels
             Name = name;
             Parent = county;
         }
+        public void ValidateParent(County county)
+        {
+            if( Parent == null)
+            {
+                Parent = county;
+            }
+
+            foreach( var kv in ZipCodeList)
+            {
+                kv.Value?.ValidateParent(this);
+            }
+        }
 
         public bool InsertGeoRecord(string zipcode)
         {

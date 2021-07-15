@@ -22,6 +22,14 @@ namespace DataModels
             Parent = city;
         }
 
+        public void ValidateParent(City city)
+        {
+            if( Parent == null)
+            {
+                Parent = city;
+            }
+        }
+
         public bool GenerateCriteriaConfigurationTemplates(string state,string fileprefix,string dir)
         {
             bool returnValue = false;

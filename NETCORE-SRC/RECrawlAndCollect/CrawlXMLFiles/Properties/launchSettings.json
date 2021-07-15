@@ -2,7 +2,7 @@
   "profiles": {
     "CrawlXMLFiles": {
       "commandName": "Project",
-      "commandLineArgs": "-s WA -g geoDB.json -d testDirWithChannels -t all",
+      "commandLineArgs": "-s WA -g geoDB.json -d  testDir -t all",
       "sqlDebugging": false
     }
   }
