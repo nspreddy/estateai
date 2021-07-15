@@ -71,6 +71,10 @@ namespace CrawlProperties
         public bool StartCrawling()
         {
             bool returnValue = false;
+            foreach( var url2Crawl in PropertyUrls2Crawl)
+            {
+                Console.WriteLine($" Kicking off to Crawl {url2Crawl}");
+            }
 
             return returnValue;
         }
@@ -139,7 +143,7 @@ namespace CrawlProperties
                         foreach (var propNode in propertyUrlNodes)
                         {
                             var propLinkUrl = propNode.InnerText;
-                            Console.WriteLine($"Prop-Link: {propLinkUrl}");
+                            //Console.WriteLine($"Prop-Link: {propLinkUrl}");
                             var urlKeyElements = RedfinPropURLUtils.ParseRedfinPropURL(propLinkUrl);
                             if(urlKeyElements != null && urlKeyElements.Count > 0)
                             {
@@ -161,7 +165,7 @@ namespace CrawlProperties
                                 }
                                 else
                                 {
-                                    Console.WriteLine($"Not adding the URL {propLinkUrl}");
+                                    //Console.WriteLine($"Not adding the URL {propLinkUrl}");
                                 }
                             }
                             else
@@ -170,6 +174,7 @@ namespace CrawlProperties
                             }
                             
                         }
+                        returnValue = true;
 
                     }
                     else
