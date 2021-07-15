@@ -61,6 +61,7 @@ namespace CrawlerLib
 
         private const int MIN_THREAD_COUNT = 5;
         private const int INITIAL_COUNT_DOWN_COUNT = 1;
+        private const int LATENCY_MAX_BETWEEK_JOBS = 500;// in milliseconds
         private static CountdownEvent cde = new CountdownEvent(INITIAL_COUNT_DOWN_COUNT);
 
         private static int JobsQueued = 0;
@@ -124,6 +125,7 @@ namespace CrawlerLib
                             
                             Console.WriteLine($"Job Status for Job ID: {message.ID}, Status: {returnValue}");
                             cde.Signal();
+                            Thread.Sleep(LATENCY_MAX_BETWEEK_JOBS);
                         }
                         else
                         {

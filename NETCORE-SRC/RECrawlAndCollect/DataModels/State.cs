@@ -130,12 +130,12 @@ namespace DataModels
 
         public string GetFilePathForPropertyData(string headDir, string filenameSuffix)
         {
-            return GetFilePathWithHeadDir(headDir, META_DATA, filenameSuffix);
+            return GetFilePathWithHeadDir(headDir, PROP_DATA, filenameSuffix);
         }
 
         public string GetFilePathForStatsData(string headDir, string filenameSuffix)
         {
-            return GetFilePathWithHeadDir(headDir, META_DATA, filenameSuffix);
+            return GetFilePathWithHeadDir(headDir, STATS_DATA, filenameSuffix);
         }
 
         public string GetFilePathWithRelativeDirPath(string dirPath, string fileSuffix)

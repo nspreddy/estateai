@@ -6,14 +6,15 @@ using System.Threading.Tasks;
 using DataModels;
 using CommonAndUtils;
 using RedfinUtils;
+using CrawlerLib;
 
 namespace CrawlProperties
 {
     internal class PrepareListAndCrawl
     {
         private CrawlerInputConfig crawlerConfig { get; set; }
-        private string XmlInDir { get; set; }
-        private string XmlOutDir { get; set; }
+        private string InDir { get; set; }
+        private string OutDir { get; set; }
 
         private HashSet<string> Cities2Crawl { get; set; }
 
@@ -24,8 +25,8 @@ namespace CrawlProperties
         public PrepareListAndCrawl(CrawlerInputConfig crawlConfig, string inDir, string outDir)
         {
             crawlerConfig= crawlConfig;
-            XmlInDir           = inDir;
-            XmlOutDir          = outDir;
+            InDir           = inDir;
+            OutDir          = outDir;
             Cities2Crawl       = new HashSet<string>();
             zipCodes2Crawl     = new HashSet<string>();
             PropertyUrls2Crawl = new Dictionary<string, string>();
@@ -51,7 +52,7 @@ namespace CrawlProperties
                 Console.WriteLine($"Cities total: {Cities2Crawl.Count()} read to Crawl");
                 // Let us get XML file path with URLs of properties to CRAWL.
                 var fileSuffix = $"{State.SALE_LISTINGS_PREFIX}.xml";
-                var xmlPropUrlFile = stateObject.GetFilePathWithRelativeDirPath(XmlInDir,fileSuffix);
+                var xmlPropUrlFile = stateObject.GetFilePathWithRelativeDirPath(InDir,fileSuffix);
                 if (xmlPropUrlFile != null)
                 {
                     returnValue = ComputeShortListofUrls(xmlPropUrlFile);
@@ -72,10 +73,33 @@ namespace CrawlProperties
         public bool StartCrawling()
         {
             bool returnValue = false;
+            Console.WriteLine(" Queuing Crawl  and Save Jobs");
             foreach( var url2CrawlKvPair in PropertyUrls2Crawl)
             {
                 Console.WriteLine($" Kicking off to Crawl {url2CrawlKvPair.Value}");
+                var fileSuffix = $"{url2CrawlKvPair.Key}.html";
+                var stateObject = GeoData.DefaultNation.GetState(crawlerConfig.State);
+
+                if(stateObject != null)
+                {
+                    var filePath = stateObject.GetFilePathForPropertyData(OutDir, fileSuffix);
+                    returnValue = CrawlerFramework.QueueCrawlUrAndSave2FileJob(url2CrawlKvPair.Value, filePath);
+                    if (!returnValue)
+                    {
+                        Console.WriteLine($"Unable to Crawl {url2CrawlKvPair.Value} sane Save to  {filePath}");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine($"Unable to Get State Object for State:{crawlerConfig.State}");
+                }                
             }
+
+            // Queued all the work, let us kick off Threads to do their job. 
+            CrawlerFramework.KickoffJobAgents();
+            // Wait for all the work to be finished by Threads.
+            CrawlerFramework.WaitForAllJobstoComplete();
+            Console.WriteLine(" All Jobs in queue processed, hence exiting");
 
             return returnValue;
         }
