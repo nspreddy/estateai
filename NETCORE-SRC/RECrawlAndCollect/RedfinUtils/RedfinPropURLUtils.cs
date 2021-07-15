@@ -16,7 +16,11 @@ namespace RedfinUtils
         public const string ZIPCODE = "ZipCode";
         public const string PROPID  = "PropID";
         public const string ADDRESS = "ADDRESS";
+        public const string COUNTY  = "County";
         public const int SEGMENTS_IN_PROP_URL = 6;
+        public const int SEGMENTS_IN_COUNTY_STATS_URL = 6;
+        public const int SEGMENTS_IN_CITY_STATS_URL = 6;
+        public const int SEGMENTS_IN_ZIPCODE_STATS_URL = 4;
         public static Dictionary<string,string> ParseRedfinPropURL(string url)
         {
             var returnValue = new Dictionary<string, string>();
@@ -53,5 +57,83 @@ namespace RedfinUtils
 
             return returnValue;
         }
+
+        // Sample URL:  https://www.redfin.com/county/2/WA/Snohomish-County/housing-market
+        public static Dictionary<string, string> ParseRedfinCountyStatURL(string url)
+        {
+            var returnValue = new Dictionary<string, string>();
+            Uri uri = new Uri(url);
+            try
+            {
+                if (uri != null && uri.Segments != null && uri.Segments.Length >= SEGMENTS_IN_COUNTY_STATS_URL)
+                {
+                    // segment 0 is always "/", segment 1 State , Segment 2  is "city"
+                    var state = uri.Segments[2].TrimEnd('/').Trim().ToLower();
+                    returnValue.Add(STATE, state);
+
+                    var rawCountyStr = uri.Segments[3].TrimEnd('/').Trim().ToLower();
+                    var county = rawCountyStr.Replace("-county", "").Trim();
+                    returnValue.Add(COUNTY, county);
+                    
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Failed to Prase URL:{url}, Exception: {ex.Message}");
+            }
+
+            return returnValue;
+        }
+
+        // Sample URL:  https://www.redfin.com/city/13/WA/Aberdeen/housing-market
+        public static Dictionary<string, string> ParseRedfinCityStatURL(string url)
+        {
+            var returnValue = new Dictionary<string, string>();
+            Uri uri = new Uri(url);
+            try
+            {
+                if (uri != null && uri.Segments != null && uri.Segments.Length >= SEGMENTS_IN_CITY_STATS_URL)
+                {
+                    // segment 0 is always "/", segment 1 State , Segment 2  is "city"
+                    var state = uri.Segments[3].TrimEnd('/').Trim().ToLower();
+                    returnValue.Add(STATE, state);
+
+                    var city = uri.Segments[4].TrimEnd('/').Trim().ToLower();                    
+                    returnValue.Add(CITY, city);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Failed to Prase URL:{url}, Exception: {ex.Message}");
+            }
+
+            return returnValue;
+        }
+
+        // Sample URL : https://www.redfin.com/zipcode/98001/housing-market
+
+        public static Dictionary<string, string> ParseRedfinZipcodeStatURL(string url)
+        {
+            var returnValue = new Dictionary<string, string>();
+            Uri uri = new Uri(url);
+            try
+            {
+                if (uri != null && uri.Segments != null && uri.Segments.Length >= SEGMENTS_IN_ZIPCODE_STATS_URL)
+                {
+                    var zipcode = uri.Segments[2].TrimEnd('/').Trim().ToLower();
+                    returnValue.Add(CITY, zipcode);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Failed to Prase URL:{url}, Exception: {ex.Message}");
+            }
+
+            return returnValue;
+        }
+
+
+
     }
 }

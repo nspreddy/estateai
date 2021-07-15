@@ -25,9 +25,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrawlXMLFiles", "CrawlXMLFi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrawlStats", "CrawlStats\CrawlStats.csproj", "{DBE349DD-4C8F-4B2F-8508-8FB7B33E002A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrawlProperties", "CrawlProperties\CrawlProperties.csproj", "{6C5FF3DD-DDC7-4D58-BC77-36FABE5A19EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrawlPropsAndStats", "CrawlProperties\CrawlPropsAndStats.csproj", "{6C5FF3DD-DDC7-4D58-BC77-36FABE5A19EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedfinUtils", "RedfinUtils\RedfinUtils.csproj", "{C0638AD1-2C99-410A-A83B-A3004A403D02}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RedfinUtils", "RedfinUtils\RedfinUtils.csproj", "{C0638AD1-2C99-410A-A83B-A3004A403D02}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
