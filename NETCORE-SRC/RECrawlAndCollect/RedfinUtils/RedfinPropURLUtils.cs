@@ -68,10 +68,10 @@ namespace RedfinUtils
                 if (uri != null && uri.Segments != null && uri.Segments.Length >= SEGMENTS_IN_COUNTY_STATS_URL)
                 {
                     // segment 0 is always "/", segment 1 State , Segment 2  is "city"
-                    var state = uri.Segments[2].TrimEnd('/').Trim().ToLower();
+                    var state = uri.Segments[3].TrimEnd('/').Trim().ToLower();
                     returnValue.Add(STATE, state);
 
-                    var rawCountyStr = uri.Segments[3].TrimEnd('/').Trim().ToLower();
+                    var rawCountyStr = uri.Segments[4].TrimEnd('/').Trim().ToLower();
                     var county = rawCountyStr.Replace("-county", "").Trim();
                     returnValue.Add(COUNTY, county);
                     
@@ -122,7 +122,7 @@ namespace RedfinUtils
                 if (uri != null && uri.Segments != null && uri.Segments.Length >= SEGMENTS_IN_ZIPCODE_STATS_URL)
                 {
                     var zipcode = uri.Segments[2].TrimEnd('/').Trim().ToLower();
-                    returnValue.Add(CITY, zipcode);
+                    returnValue.Add(ZIPCODE, zipcode);
                 }
             }
             catch (Exception ex)

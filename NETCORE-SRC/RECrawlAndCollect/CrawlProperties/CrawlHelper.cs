@@ -122,6 +122,7 @@ namespace CrawlProperties
                 ComputeShortlistOfCountyStatsURLs();
                 ComputeShortlistOfCityStatsURLs();
                 ComputeShortlistOfZipCodeStatsURLs();
+                returnValue = true;
             }
             else
             {
@@ -134,136 +135,153 @@ namespace CrawlProperties
         /// </summary>
         private void ComputeShortlistOfCountyStatsURLs()
         {
-            var stateObject = GeoData.DefaultNation.GetState(crawlerConfig.State);
-            var countyStatsXmlFilePrefix = $"{State.COUNTY_STATS_PREFIX}.xml";
-            var countyXmlUrlFile = stateObject.GetFilePathWithRelativeDirPath(InDir, countyStatsXmlFilePrefix);
-
-            var listOfUrls2Filter = GetUrls2CrawlFromXmlFile(countyXmlUrlFile);
-
-            if( listOfUrls2Filter !=null && listOfUrls2Filter.Count > 0)
+            try
             {
-                foreach(var url in listOfUrls2Filter)
+                var stateObject = GeoData.DefaultNation.GetState(crawlerConfig.State);
+                var countyStatsXmlFilePrefix = $"{State.COUNTY_STATS_PREFIX}.xml";
+                var countyXmlUrlFile = stateObject.GetFilePathWithRelativeDirPath(InDir, countyStatsXmlFilePrefix);
+
+                var listOfUrls2Filter = GetUrls2CrawlFromXmlFile(countyXmlUrlFile);
+
+                if (listOfUrls2Filter != null && listOfUrls2Filter.Count > 0)
                 {
-                    // sample county Stats URL: https://www.redfin.com/county/2/WA/Snohomish-County/housing-market
-                    var urlKeyElements = RedfinPropURLUtils.ParseRedfinCountyStatURL(url);
-                    if (urlKeyElements != null && urlKeyElements.Count > 0)
+                    foreach (var url in listOfUrls2Filter)
                     {
-                        var state  = urlKeyElements[RedfinPropURLUtils.STATE];
-                        var county = urlKeyElements[RedfinPropURLUtils.COUNTY];
-
-                        bool isPropCrawlable = false;
-
-                        if (!string.IsNullOrEmpty(county) && Counties2Crawl.Contains(county))
+                        // sample county Stats URL: https://www.redfin.com/county/2/WA/Snohomish-County/housing-market
+                        var urlKeyElements = RedfinPropURLUtils.ParseRedfinCountyStatURL(url);
+                        if (urlKeyElements != null && urlKeyElements.Count > 0)
                         {
-                            isPropCrawlable = true;
-                        }                        
+                            var state = urlKeyElements[RedfinPropURLUtils.STATE];
+                            var county = urlKeyElements[RedfinPropURLUtils.COUNTY];
 
-                        if (isPropCrawlable)
+                            bool isPropCrawlable = false;
+
+                            if (!string.IsNullOrEmpty(county) && Counties2Crawl.Contains(county))
+                            {
+                                isPropCrawlable = true;
+                            }
+
+                            if (isPropCrawlable)
+                            {
+                                // Let us create a Key                          
+                                var propKey = $"{state}_countystats_{county}";
+                                AddPropUrl(propKey, url);
+                            }
+                        }
+                        else
                         {
-                            // Let us create a Key                          
-                            var propKey = $"{state}_CountyStats_{county}";
-                            AddPropUrl(propKey, url);
-                        }                       
-                    }
-                    else
-                    {
-                        Console.WriteLine($"Not adding the URL {url} due to parsing Issues");
+                            Console.WriteLine($"Not adding the URL {url} due to parsing Issues");
+                        }
                     }
                 }
-            }
-            else
+                else
+                {
+                    Console.WriteLine($"No list to Crawl for Counties");
+                }
+            }catch (Exception ex)
             {
-                Console.WriteLine($"No list to Crawl for Counties");
+                Console.WriteLine($"Exception while processing County Stats URLs, exception:{ex.Message}");
             }
 
         }
 
         private void ComputeShortlistOfCityStatsURLs()
         {
-            var stateObject = GeoData.DefaultNation.GetState(crawlerConfig.State);
-            var cityStatsXmlFilePrefix = $"{State.CITY_STATS_PREFIX}.xml";
-            var cityXmlUrlFile = stateObject.GetFilePathWithRelativeDirPath(InDir, cityStatsXmlFilePrefix);
-
-            var listOfUrls2Filter = GetUrls2CrawlFromXmlFile(cityXmlUrlFile);
-            if (listOfUrls2Filter != null && listOfUrls2Filter.Count > 0)
+            try
             {
-                foreach (var url in listOfUrls2Filter)
+                var stateObject = GeoData.DefaultNation.GetState(crawlerConfig.State);
+                var cityStatsXmlFilePrefix = $"{State.CITY_STATS_PREFIX}.xml";
+                var cityXmlUrlFile = stateObject.GetFilePathWithRelativeDirPath(InDir, cityStatsXmlFilePrefix);
+
+                var listOfUrls2Filter = GetUrls2CrawlFromXmlFile(cityXmlUrlFile);
+                if (listOfUrls2Filter != null && listOfUrls2Filter.Count > 0)
                 {
-                    // sample City  Stats URL: https://www.redfin.com/city/13/WA/Aberdeen/housing-market 
-                    var urlKeyElements = RedfinPropURLUtils.ParseRedfinCityStatURL(url);
-                    if (urlKeyElements != null && urlKeyElements.Count > 0)
+                    foreach (var url in listOfUrls2Filter)
                     {
-                        var state = urlKeyElements[RedfinPropURLUtils.STATE];
-                        var city  = urlKeyElements[RedfinPropURLUtils.CITY];
-
-                        bool isPropCrawlable = false;
-                        if (!string.IsNullOrEmpty(city) && Cities2Crawl.Contains(city))
+                        // sample City  Stats URL: https://www.redfin.com/city/13/WA/Aberdeen/housing-market 
+                        var urlKeyElements = RedfinPropURLUtils.ParseRedfinCityStatURL(url);
+                        if (urlKeyElements != null && urlKeyElements.Count > 0)
                         {
-                            isPropCrawlable = true;
-                        }
+                            var state = urlKeyElements[RedfinPropURLUtils.STATE];
+                            var city = urlKeyElements[RedfinPropURLUtils.CITY];
 
-                        if (isPropCrawlable)
-                        {
-                            // Let us create a Key                          
-                            var propKey = $"{state}_CityStats_{city}";
-                            AddPropUrl(propKey, url);
+                            bool isPropCrawlable = false;
+                            if (!string.IsNullOrEmpty(city) && Cities2Crawl.Contains(city))
+                            {
+                                isPropCrawlable = true;
+                            }
+
+                            if (isPropCrawlable)
+                            {
+                                // Let us create a Key                          
+                                var propKey = $"{state}_citystats_{city}";
+                                AddPropUrl(propKey, url);
+                            }
                         }
-                    }
-                    else
-                    {
-                        Console.WriteLine($"Not adding the URL {url} due to parsing Issues");
+                        else
+                        {
+                            Console.WriteLine($"Not adding the URL {url} due to parsing Issues");
+                        }
                     }
 
                 }
-
-            }
-            else
+                else
+                {
+                    Console.WriteLine($"No list to Crawl for Counties");
+                }
+            }catch (Exception ex)
             {
-                Console.WriteLine($"No list to Crawl for Counties");
+                Console.WriteLine($"Exception while processing CityStats URLs, exception:{ex.Message}");
             }
 
         }
 
         private void ComputeShortlistOfZipCodeStatsURLs()
         {
-            var stateObject = GeoData.DefaultNation.GetState(crawlerConfig.State);
-            var zipCodeStatsXmlFilePrefix = $"{State.ZIPCODE_STATS_PREFIX}.xml";
-            var zipcodeXmlUrlFile = stateObject.GetFilePathWithRelativeDirPath(InDir, zipCodeStatsXmlFilePrefix);
-
-            var listOfUrls2Filter = GetUrls2CrawlFromXmlFile(zipcodeXmlUrlFile);
-            if (listOfUrls2Filter != null && listOfUrls2Filter.Count > 0)
+            try
             {
-                foreach (var url in listOfUrls2Filter)
+                var stateObject = GeoData.DefaultNation.GetState(crawlerConfig.State);
+                var zipCodeStatsXmlFilePrefix = $"{State.ZIPCODE_STATS_PREFIX}.xml";
+                var zipcodeXmlUrlFile = stateObject.GetFilePathWithRelativeDirPath(InDir, zipCodeStatsXmlFilePrefix);
+
+                var listOfUrls2Filter = GetUrls2CrawlFromXmlFile(zipcodeXmlUrlFile);
+                if (listOfUrls2Filter != null && listOfUrls2Filter.Count > 0)
                 {
-                    // sample ZipCode  Stats URL: https://www.redfin.com/zipcode/98001/housing-market 
-                    var urlKeyElements = RedfinPropURLUtils.ParseRedfinZipcodeStatURL(url);
-                    if (urlKeyElements != null && urlKeyElements.Count > 0)
+                    foreach (var url in listOfUrls2Filter)
                     {
-                        var zipcode = urlKeyElements[RedfinPropURLUtils.ZIPCODE];
-                        
-                        bool isPropCrawlable = false;
-                        if (!string.IsNullOrEmpty(zipcode) && ZipCodes2Crawl.Contains(zipcode))
+                        // sample ZipCode  Stats URL: https://www.redfin.com/zipcode/98001/housing-market 
+                        var urlKeyElements = RedfinPropURLUtils.ParseRedfinZipcodeStatURL(url);
+                        if (urlKeyElements != null && urlKeyElements.Count > 0)
                         {
-                            isPropCrawlable = true;
+                            var zipcode = urlKeyElements[RedfinPropURLUtils.ZIPCODE];
+
+                            bool isPropCrawlable = false;
+                            if (!string.IsNullOrEmpty(zipcode) && ZipCodes2Crawl.Contains(zipcode))
+                            {
+                                isPropCrawlable = true;
+                            }
+
+                            if (isPropCrawlable)
+                            {
+                                // Let us create a Key                          
+                                var propKey = $"{stateObject.Name}_zipcodestats_{zipcode}";
+                                AddPropUrl(propKey, url);
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Not adding the URL {url} due to parsing Issues");
                         }
 
-                        if (isPropCrawlable)
-                        {
-                            // Let us create a Key                          
-                            var propKey = $"{stateObject.Name}_ZipCodeStats_{zipcode}";
-                            AddPropUrl(propKey, url);
-                        }
                     }
-                    else
-                    {
-                        Console.WriteLine($"Not adding the URL {url} due to parsing Issues");
-                    }
-
                 }
-            }
-            else
+                else
+                {
+                    Console.WriteLine($"No list to Crawl for Counties");
+                }
+            }catch (Exception ex)
             {
-                Console.WriteLine($"No list to Crawl for Counties");
+                Console.WriteLine($"Exception while processing ZipCodeStats URLs, exception:{ex.Message}");
             }
 
         }

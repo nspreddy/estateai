@@ -1,7 +1,7 @@
 {
   "JobName": "SampleCrawler",
   "State": "WA",
-  "County-List": [ "King"
+  "County-List": ["King"
   ],
   "City-List": [
     "Redmond"
