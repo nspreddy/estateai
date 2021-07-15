@@ -16,4 +16,10 @@
     <ProjectReference Include="..\CrawlerLib\CrawlerLib.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="geoDB.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

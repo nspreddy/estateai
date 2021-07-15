@@ -109,8 +109,8 @@ namespace DataModels
             try
             {
                 County countyObject;
-
-                if (CountyList.TryGetValue(county, out countyObject))
+                var countyTrimmed = county.ToLower().Trim();
+                if (CountyList.TryGetValue(countyTrimmed, out countyObject))
                 {
                   result = countyObject.CityList.Keys.ToList();
                 }
@@ -123,19 +123,19 @@ namespace DataModels
             return result;
         }
 
-        public string GetFilePathForMetaData(string headDir,string filenameSuffix)
+        public string GetFilePathForMetaData(string headDir,string jobName,string filenameSuffix)
         {
-            return GetFilePathWithHeadDir(headDir, META_DATA, filenameSuffix);
+            return GetFilePathWithHeadDir(headDir, jobName, META_DATA, filenameSuffix);
         }
 
-        public string GetFilePathForPropertyData(string headDir, string filenameSuffix)
+        public string GetFilePathForPropertyData(string headDir, string jobName, string filenameSuffix)
         {
-            return GetFilePathWithHeadDir(headDir, PROP_DATA, filenameSuffix);
+            return GetFilePathWithHeadDir(headDir, jobName, PROP_DATA, filenameSuffix);
         }
 
-        public string GetFilePathForStatsData(string headDir, string filenameSuffix)
+        public string GetFilePathForStatsData(string headDir, string jobName, string filenameSuffix)
         {
-            return GetFilePathWithHeadDir(headDir, STATS_DATA, filenameSuffix);
+            return GetFilePathWithHeadDir(headDir, jobName, STATS_DATA, filenameSuffix);
         }
 
         public string GetFilePathWithRelativeDirPath(string dirPath, string fileSuffix)
@@ -205,11 +205,11 @@ namespace DataModels
         /// <param name="outDir"></param>
         /// <param name="filePrefix"></param>
         /// <returns></returns>
-        private string GetFilePathWithHeadDir(string headDir, string subdir, string filenameSuffix)
+        private string GetFilePathWithHeadDir(string headDir, string subdir1, string subdir2, string filenameSuffix)
         {
             var filename = $"{Name}_{filenameSuffix}";
             var dateFolderName = DateTime.Now.ToString("yyyy_MM_dd");
-            var dir = Path.Combine(headDir, this.Parent.Name, Name, dateFolderName, subdir);
+            var dir = Path.Combine(headDir, this.Parent.Name, Name, dateFolderName, subdir1, subdir2);
             if (!Directory.Exists(dir))
             {
                 Directory.CreateDirectory(dir);
@@ -247,7 +247,7 @@ namespace DataModels
         {
             get
             {
-                return String.Format(CITY_SCOPED_STATS, Name);
+                return String.Format(CITY_SCOPED_STATS, Name.ToUpper());
             }
         }
 
@@ -255,7 +255,7 @@ namespace DataModels
         {
             get
             {
-                return String.Format(COUNTY_SCOPED_STATS, Name);
+                return String.Format(COUNTY_SCOPED_STATS, Name.ToUpper());
             }
         }
 
@@ -263,7 +263,7 @@ namespace DataModels
         {
             get
             {
-                return String.Format(ZIPCODE_SCOPED_STATS, Name);
+                return String.Format(ZIPCODE_SCOPED_STATS, Name.ToUpper());
             }
         }
         // Listings: 
@@ -276,7 +276,7 @@ namespace DataModels
         {
             get
             {
-                return String.Format(SALELIST_STATE_SCOPED, Name);
+                return String.Format(SALELIST_STATE_SCOPED, Name.ToUpper());
             }
         }
 
@@ -289,7 +289,7 @@ namespace DataModels
         {
             get
             {
-                return String.Format(PROPLIST_STATE_SCOPED, Name);
+                return String.Format(PROPLIST_STATE_SCOPED, Name.ToUpper());
             }
         }
 

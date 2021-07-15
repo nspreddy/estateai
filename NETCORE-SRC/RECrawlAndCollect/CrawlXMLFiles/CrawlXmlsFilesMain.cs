@@ -9,7 +9,7 @@ namespace CrawlXMLFiles
     {
 
         private const string STATEOPTION = "-s|--state <value>"; // "ALL" for all states
-        private const string ALLSTATES = "ALL";
+        private const string ALLSTATES = "all";
         private const string GEODBFILE = "-g|--geodb <value>";
         private const string OUTPUTDIROPTION = "-d|--dir <value>";
 
@@ -76,7 +76,7 @@ namespace CrawlXMLFiles
                                 foreach ( var stateCode in stateCodes)
                                 {
                                     // State codes are always given in upper.
-                                    if( stateCode.Trim().ToUpper() == ALLSTATES)
+                                    if( stateCode.Trim().ToLower() == ALLSTATES)
                                     {
                                         allStates = true;
                                     }

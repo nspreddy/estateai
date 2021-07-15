@@ -144,7 +144,7 @@ namespace CrawlProperties
                     {
                         foreach (var crawlConfig in crawlConfigFiles)
                         {
-                            switch (command)
+                            switch (command.ToLower())
                             {
                                 case CrawlHelper.CRAWL_PROPS_CMD:
                                 case CrawlHelper.CRAWL_STATS_CMD:

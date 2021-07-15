@@ -31,7 +31,8 @@ namespace DataModels
 
         public State GetState( string Code)
         {
-            if( StatesList.TryGetValue(Code, out State state))
+            var stateCode = Code.ToLower().Trim();
+            if( StatesList.TryGetValue(stateCode, out State state))
             {
                 state.ValidateParent(this);
                 return state;

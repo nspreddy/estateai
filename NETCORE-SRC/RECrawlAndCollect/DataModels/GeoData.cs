@@ -68,7 +68,7 @@ namespace DataModels
 
         public static bool InsertGeoRecord(string state, string county, string city, string zipcode)
         {
-            return DefaultNation.InsertGeoRecord(state, county, city, zipcode);
+            return DefaultNation.InsertGeoRecord(state.ToLower(), county.ToLower(), city.ToLower(), zipcode.ToLower());
         }
 
         public static bool GenerateTemplateConfigurationFiles(string prefix, string dir)

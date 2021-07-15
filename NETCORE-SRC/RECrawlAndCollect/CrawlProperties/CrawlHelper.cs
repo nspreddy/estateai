@@ -47,7 +47,7 @@ namespace CrawlProperties
         public bool PrepareList2Crawl()
         {
             bool returnValue = false;
-            switch (Command)
+            switch (Command.ToLower())
             {
                 case CRAWL_PROPS_CMD:
                     returnValue=  PreparePropertyList2Crawl();
@@ -74,13 +74,13 @@ namespace CrawlProperties
                 if(stateObject != null)
                 {
                     string filePath = "";
-                    switch (Command)
+                    switch (Command.ToLower())
                     {
                         case CRAWL_PROPS_CMD:
-                            filePath = stateObject.GetFilePathForPropertyData(OutDir, fileSuffix);
+                            filePath = stateObject.GetFilePathForPropertyData(OutDir,crawlerConfig.JobName, fileSuffix);
                             break;
                         case CRAWL_STATS_CMD:
-                            filePath = stateObject.GetFilePathForStatsData(OutDir, fileSuffix);
+                            filePath = stateObject.GetFilePathForStatsData(OutDir, crawlerConfig.JobName, fileSuffix);
                             break;
                         default:
                             Console.WriteLine($" Unknown Cmd ({Command}) area to process");
@@ -151,7 +151,7 @@ namespace CrawlProperties
                         var urlKeyElements = RedfinPropURLUtils.ParseRedfinCountyStatURL(url);
                         if (urlKeyElements != null && urlKeyElements.Count > 0)
                         {
-                            var state = urlKeyElements[RedfinPropURLUtils.STATE];
+                            var state  = urlKeyElements[RedfinPropURLUtils.STATE];
                             var county = urlKeyElements[RedfinPropURLUtils.COUNTY];
 
                             bool isPropCrawlable = false;
@@ -164,7 +164,7 @@ namespace CrawlProperties
                             if (isPropCrawlable)
                             {
                                 // Let us create a Key                          
-                                var propKey = $"{state}_countystats_{county}";
+                                var propKey = $"countystats_{county}";
                                 AddPropUrl(propKey, url);
                             }
                         }
@@ -214,7 +214,7 @@ namespace CrawlProperties
                             if (isPropCrawlable)
                             {
                                 // Let us create a Key                          
-                                var propKey = $"{state}_citystats_{city}";
+                                var propKey = $"citystats_{city}";
                                 AddPropUrl(propKey, url);
                             }
                         }
@@ -264,7 +264,7 @@ namespace CrawlProperties
                             if (isPropCrawlable)
                             {
                                 // Let us create a Key                          
-                                var propKey = $"{stateObject.Name}_zipcodestats_{zipcode}";
+                                var propKey = $"zipcodestats_{zipcode}";
                                 AddPropUrl(propKey, url);
                             }
                         }
@@ -343,6 +343,7 @@ namespace CrawlProperties
                     foreach (var propLinkUrl in listOfUrls2Filter)
                     {
                         // sample Property URL : https://www.redfin.com/WA/Moses-Lake/7935-Dune-Lake-Rd-SE-98837/home/16825225
+                        // https://www.redfin.com/WA/Issaquah/29398-SE-64th-St-98027/unit-D/home/55520085
                         var urlKeyElements = RedfinPropURLUtils.ParseRedfinPropURL(propLinkUrl);
                         if (urlKeyElements != null && urlKeyElements.Count > 0)
                         {
@@ -367,7 +368,7 @@ namespace CrawlProperties
                                 var address = urlKeyElements[RedfinPropURLUtils.ADDRESS];
                                 var Id = urlKeyElements[RedfinPropURLUtils.PROPID];
 
-                                var propKey = $"{state}_{City}_{Id}_{address}";
+                                var propKey = $"{City}_{Id}_{address}";
                                 AddPropUrl(propKey, propLinkUrl);
                             }
                             else
@@ -380,7 +381,7 @@ namespace CrawlProperties
                             Console.WriteLine($"Not adding the URL {propLinkUrl} due to parsing Issues");
                         }
                     }
-
+                    returnValue = true;
                 }
                 else
                 {
@@ -426,12 +427,15 @@ namespace CrawlProperties
 
         private void UpdateHashSetWithCountyList(List<string> counties)
         {
-            foreach (var county in counties)
+            if (counties != null && counties.Count() > 0)
             {
-                var countyTrimmed = county.ToLower().Trim();
-                if (!Counties2Crawl.Contains(countyTrimmed))
+                foreach (var county in counties)
                 {
-                    Counties2Crawl.Add(countyTrimmed);
+                    var countyTrimmed = county.ToLower().Trim();
+                    if (!Counties2Crawl.Contains(countyTrimmed))
+                    {
+                        Counties2Crawl.Add(countyTrimmed);
+                    }
                 }
             }
         }
@@ -442,12 +446,15 @@ namespace CrawlProperties
         /// <param name="cities"></param>
         private void UpdateHashSetWithCityList(List<string> cities)
         {
-            foreach (var city in cities)
+            if (cities != null && cities.Count() > 0)
             {
-                var cityTrimmed = city.ToLower().Trim();
-                if (!Cities2Crawl.Contains(cityTrimmed))
+                foreach (var city in cities)
                 {
-                    Cities2Crawl.Add(cityTrimmed);
+                    var cityTrimmed = city.ToLower().Trim();
+                    if (!Cities2Crawl.Contains(cityTrimmed))
+                    {
+                        Cities2Crawl.Add(cityTrimmed);
+                    }
                 }
             }
         }
@@ -457,12 +464,15 @@ namespace CrawlProperties
         /// <param name="zipCodeList"></param>
         private void UpdateHashSetWithZipCodeList(List<string> zipCodeList)
         {
-            foreach (var zipCode in zipCodeList)
+            if (zipCodeList != null && zipCodeList.Count() > 0)
             {
-                var zipCodeTrimmed = zipCode.ToLower().Trim();
-                if (!ZipCodes2Crawl.Contains(zipCodeTrimmed))
+                foreach (var zipCode in zipCodeList)
                 {
-                    ZipCodes2Crawl.Add(zipCodeTrimmed);
+                    var zipCodeTrimmed = zipCode.ToLower().Trim();
+                    if (!ZipCodes2Crawl.Contains(zipCodeTrimmed))
+                    {
+                        ZipCodes2Crawl.Add(zipCodeTrimmed);
+                    }
                 }
             }
         }

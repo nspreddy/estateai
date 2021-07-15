@@ -77,7 +77,8 @@ namespace GeoDataBuilder
                             {
                                 county = type;
                             }
-                            returnValue = GeoData.InsertGeoRecord(state, county, city, zipcode);
+                            var trimmmedCounty = county.Replace("County", "").Trim();
+                            returnValue = GeoData.InsertGeoRecord(state, trimmmedCounty, city, zipcode);
                             if (!returnValue)
                             {
                                 var warnStr = $"Warning - Failed to Insert Record( Type: {type} Decomm: {decomm} State: {state}, County:{county}, City: {city} , ZipCode: {zipcode})";
