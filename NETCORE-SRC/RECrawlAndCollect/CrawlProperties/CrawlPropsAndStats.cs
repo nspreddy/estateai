@@ -34,19 +34,9 @@ namespace CrawlProperties
 
                 return string.Format($"Version {VERSION}");
             });
-            #endregion
-
-            /*
-            #region OPTIONS_ACTIONS
-            var configFileOption = app.Option(CFGFILEOPTION, "Configuration file(CSV)", CommandOptionType.SingleValue);
-            var outputDirOption = app.Option(OUTPUTDIROPTION, "OutPut DIR", CommandOptionType.SingleValue);
-            var inputDirOption = app.Option(INPUTDIROPTION, "Input DIR", CommandOptionType.SingleValue);
-            var crawlConfigOption = app.Option(CRAWLCONFIG, "Crawl Config File", CommandOptionType.MultipleValue); ;
-
-            #endregion*/
+            #endregion                     
 
             #region PROCESSING_CODE
-
             app.Command(CrawlHelper.CRAWL_PROPS_CMD, command =>
             {
                 var geoconfigFileOption   = command.Option(GEOCFGFILEOPTION, "GeoDB Configfile", CommandOptionType.SingleValue);

@@ -8,15 +8,15 @@ namespace CrawlXMLFiles
     class CrawlXmlsFilesMain
     {
 
-        private const string STATEOPTION = "-s|--state <value>"; // "ALL" for all states
-        private const string ALLSTATES = "all";
-        private const string GEODBFILE = "-g|--geodb <value>";
+        private const string STATEOPTION     = "-s|--state <value>"; // "ALL" for all states
+        private const string ALLSTATES       = "all";
+        private const string GEODBFILE       = "-g|--geodb <value>";
         private const string OUTPUTDIROPTION = "-d|--dir <value>";
 
-        private const string CRAWL_TYPE = "-t|--type <value>";  // posiisble value LIST or STATS or ALL
-        public const string CRAWL_ALL = "all";
-        public const string CRAWL_LIST = "list";
-        public const string CRAWL_STATS = "stats";
+        private const string CRAWL_TYPE  = "-t|--type <value>";  // posiisble value LIST or STATS or ALL
+        public const  string CRAWL_ALL   = "all";
+        public const  string CRAWL_LIST  = "list";
+        public const  string CRAWL_STATS = "stats";
 
         private const string HELP = "-? | -h | --help";
 

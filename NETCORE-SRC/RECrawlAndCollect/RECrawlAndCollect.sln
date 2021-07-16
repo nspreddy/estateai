@@ -29,6 +29,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RedfinUtils", "RedfinUtils\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Analyzers", "Analyzers", "{B4F2CC61-FC1E-491F-AD55-889EDEC30390}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PropAnalyzer", "PropAnalyzer\PropAnalyzer.csproj", "{38349C8A-0717-485D-BBF1-0B922D59CB02}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +73,10 @@ Global
 		{C0638AD1-2C99-410A-A83B-A3004A403D02}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C0638AD1-2C99-410A-A83B-A3004A403D02}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C0638AD1-2C99-410A-A83B-A3004A403D02}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38349C8A-0717-485D-BBF1-0B922D59CB02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38349C8A-0717-485D-BBF1-0B922D59CB02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38349C8A-0717-485D-BBF1-0B922D59CB02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38349C8A-0717-485D-BBF1-0B922D59CB02}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -85,6 +91,7 @@ Global
 		{31006FA9-8051-4368-A16C-ED427D7AD8C6} = {B5A8AE86-BA68-4B4C-A864-070F759A5081}
 		{6C5FF3DD-DDC7-4D58-BC77-36FABE5A19EA} = {B5A8AE86-BA68-4B4C-A864-070F759A5081}
 		{C0638AD1-2C99-410A-A83B-A3004A403D02} = {46857497-18FC-4FD3-BF7F-2830A8374BA3}
+		{38349C8A-0717-485D-BBF1-0B922D59CB02} = {B4F2CC61-FC1E-491F-AD55-889EDEC30390}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {81B5BA8D-FD08-4751-9780-EA6795655DF3}
