@@ -145,7 +145,9 @@ namespace PropAnalyzer
                     var stateObject = GeoData.DefaultNation.GetState(processConfig.State);
                     if (stateObject != null)
                     {
-                        // ToDo
+                        var analysisHelper = new AnalysisHelper(processConfig,inputDir,date, outputDir);
+                        analysisHelper.PrepListOfProperyHtmlPages2Extract();
+                        analysisHelper.PrepListOfStatsHtmlPages2Extract();
                     }
                     else
                     {

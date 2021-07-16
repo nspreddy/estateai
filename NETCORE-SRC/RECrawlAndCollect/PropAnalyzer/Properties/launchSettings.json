@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "PropAnalyzer": {
+      "commandName": "Project",
+      "commandLineArgs": "-g geoDB.json -p ProcessConfig_Tmpl_WA.json -i testDir -o ourDir1 "
+    }
+  }
+}

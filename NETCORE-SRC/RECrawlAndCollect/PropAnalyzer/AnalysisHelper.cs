@@ -31,7 +31,7 @@ namespace PropAnalyzer
         private Dictionary<string, string> StatsFiles2Analyze { get; set; }
         #endregion
 
-        public AnalysisHelper( CrawlerInputConfig processCfg, string inDir, string outDir,string dateDir)
+        public AnalysisHelper( CrawlerInputConfig processCfg, string inDir,string dateDir, string outDir)
         {
             ProcessorCfg = processCfg;
             InDir = inDir;
@@ -194,7 +194,6 @@ namespace PropAnalyzer
                 {
                     Console.WriteLine($"Unable to enumurate HTML files in dir:{dirPath}");
                 }
-
 
                 returnValue = true;
             }
