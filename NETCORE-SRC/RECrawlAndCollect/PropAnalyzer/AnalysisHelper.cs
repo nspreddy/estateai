@@ -185,7 +185,7 @@ namespace PropAnalyzer
                             if (isPropCrawlable)
                             {
                                 var propKey = $"{type}_{valueBasedonType}";
-                                AddPropUrl(propKey, htmlFile);
+                                AddStatsUrl(propKey, htmlFile);
                             }
                         }
                     }
@@ -263,6 +263,14 @@ namespace PropAnalyzer
             if (!propertyFiles2Analyze.ContainsKey(key))
             {
                 propertyFiles2Analyze.Add(key, url);
+            }
+        }
+
+        private void AddStatsUrl(string key, string url)
+        {
+            if (!StatsFiles2Analyze.ContainsKey(key))
+            {
+                StatsFiles2Analyze.Add(key, url);
             }
         }
 
