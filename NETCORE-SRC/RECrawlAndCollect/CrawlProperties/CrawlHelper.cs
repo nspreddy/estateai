@@ -74,13 +74,14 @@ namespace CrawlProperties
                 if(stateObject != null)
                 {
                     string filePath = "";
+                    var dateFolderName = DateTime.Now.ToString("yyyy_MM_dd");
                     switch (Command.ToLower())
                     {
                         case CRAWL_PROPS_CMD:
-                            filePath = stateObject.GetFilePathForPropertyData(OutDir,crawlerConfig.JobName, fileSuffix);
+                            filePath = stateObject.GetFilePathForPropertyData(OutDir, dateFolderName,crawlerConfig.JobName, fileSuffix);
                             break;
                         case CRAWL_STATS_CMD:
-                            filePath = stateObject.GetFilePathForStatsData(OutDir, crawlerConfig.JobName, fileSuffix);
+                            filePath = stateObject.GetFilePathForStatsData(OutDir, dateFolderName,crawlerConfig.JobName, fileSuffix);
                             break;
                         default:
                             Console.WriteLine($" Unknown Cmd ({Command}) area to process");

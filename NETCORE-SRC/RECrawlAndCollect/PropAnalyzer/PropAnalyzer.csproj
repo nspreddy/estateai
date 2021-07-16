@@ -17,4 +17,13 @@
     <ProjectReference Include="..\RedfinUtils\RedfinUtils.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="geoDB.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ProcessConfig_Tmpl_WA.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

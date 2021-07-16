@@ -123,19 +123,19 @@ namespace DataModels
             return result;
         }
 
-        public string GetFilePathForMetaData(string headDir,string jobName,string filenameSuffix)
+        public string GetFilePathForMetaData(string headDir,string dateFolderName,string jobName,string filenameSuffix)
         {
-            return GetFilePathWithHeadDir(headDir, jobName, META_DATA, filenameSuffix);
+            return GetFilePathWithHeadDir(headDir, dateFolderName,jobName, META_DATA, filenameSuffix);
         }
 
-        public string GetFilePathForPropertyData(string headDir, string jobName, string filenameSuffix)
+        public string GetFilePathForPropertyData(string headDir, string dateFolderName, string jobName, string filenameSuffix)
         {
-            return GetFilePathWithHeadDir(headDir, jobName, PROP_DATA, filenameSuffix);
+            return GetFilePathWithHeadDir(headDir, dateFolderName, jobName, PROP_DATA, filenameSuffix);
         }
 
-        public string GetFilePathForStatsData(string headDir, string jobName, string filenameSuffix)
+        public string GetFilePathForStatsData(string headDir, string dateFolderName, string jobName, string filenameSuffix)
         {
-            return GetFilePathWithHeadDir(headDir, jobName, STATS_DATA, filenameSuffix);
+            return GetFilePathWithHeadDir(headDir, dateFolderName, jobName, STATS_DATA, filenameSuffix);
         }
 
         public string GetFilePathWithRelativeDirPath(string dirPath, string fileSuffix)
@@ -205,10 +205,10 @@ namespace DataModels
         /// <param name="outDir"></param>
         /// <param name="filePrefix"></param>
         /// <returns></returns>
-        private string GetFilePathWithHeadDir(string headDir, string subdir1, string subdir2, string filenameSuffix)
+        private string GetFilePathWithHeadDir(string headDir,string dateFolderName, string subdir1, string subdir2, string filenameSuffix)
         {
             var filename = $"{Name}_{filenameSuffix}";
-            var dateFolderName = DateTime.Now.ToString("yyyy_MM_dd");
+            //var dateFolderName = DateTime.Now.ToString("yyyy_MM_dd");
             var dir = Path.Combine(headDir, this.Parent.Name, Name, dateFolderName, subdir1, subdir2);
             if (!Directory.Exists(dir))
             {

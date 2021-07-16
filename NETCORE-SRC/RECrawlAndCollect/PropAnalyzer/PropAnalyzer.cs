@@ -6,15 +6,17 @@ namespace PropAnalyzer
 {
     class PropAnalyzer
     {
-        private const string GEOCFGFILEOPTION = "-g|--geodb <value>";        
+        private const string GEOCFGFILEOPTION = "-g|--geodb <value>";
+        private const string PROCESSCONFIG    = "-c|--crawl <value>";
         private const string INPUTDIROPTION   = "-i|--inputdir <value>";
         private const string OUTPUTDIROPTION  = "-o|--outputdir <value>";
+        private const string DATE = "-d|--date <value>";
 
         private const string HELP             = "-? | -h | --help";
         private const string VERSIONOPTION    = "-v|--version";
         private const string VERSION          = "0.1";
 
-        private const string DESC = "Property Analyzers";
+        private const string DESC = "Property Data Analysis";
         static void Main(string[] args)
         {
             var execName = System.AppDomain.CurrentDomain.FriendlyName;
@@ -26,10 +28,10 @@ namespace PropAnalyzer
             app.HelpOption(HELP);
             app.VersionOption(VERSIONOPTION, () =>
             {
-
                 return string.Format($"Version {VERSION}");
             });
             #endregion
+
 
 
 

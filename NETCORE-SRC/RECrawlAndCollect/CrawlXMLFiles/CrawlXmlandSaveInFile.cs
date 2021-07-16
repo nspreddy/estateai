@@ -123,7 +123,8 @@ namespace CrawlXMLFiles
                 {
                     //var filePath = GetFullFilePath(nation, stateObject.Name, prefix);
                     var fileSuffix = $"{prefix}.xml";
-                    var filePath = stateObject.GetFilePathForMetaData(OutputDir,"", fileSuffix);
+                    var dateFolderName = DateTime.Now.ToString("yyyy_MM_dd");
+                    var filePath = stateObject.GetFilePathForMetaData(OutputDir, dateFolderName,"", fileSuffix);
 
                     returnValue = CrawlerFramework.QueueCrawlUrAndSave2FileJob(url2Crawl, filePath);
 
