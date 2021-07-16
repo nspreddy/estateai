@@ -199,7 +199,7 @@ namespace CrawlProperties
                         if(crawlHelper.PrepareList2Crawl())
                         {
                             // Now we have a list, let us crawl.
-                            // ToDO.. initiate crawler. 
+                            // ToDo.. initiate crawler. 
                             crawlHelper.QueueCrawlJobs();
                             returnValue = true;
                         }
@@ -207,7 +207,6 @@ namespace CrawlProperties
                         {
                             Console.WriteLine($"Failed to prepare prop list to Crawl");
                         }
-
                     }
                     else
                     {
@@ -218,7 +217,6 @@ namespace CrawlProperties
                 {
                     Console.WriteLine($"Unable to read Config(JSON): {configFile}");
                 }
-
             }
             catch(Exception ex)
             {
