@@ -369,7 +369,7 @@ namespace CrawlProperties
                                 var address = urlKeyElements[RedfinPropURLUtils.ADDRESS];
                                 var Id = urlKeyElements[RedfinPropURLUtils.PROPID];
 
-                                var propKey = $"{City}_{Id}_{address}";
+                                var propKey = $"{City}_{Id}_{address}_{ZipCode}";
                                 AddPropUrl(propKey, propLinkUrl);
                             }
                             else

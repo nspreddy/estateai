@@ -42,7 +42,7 @@ namespace CrawlProperties
                 var geoconfigFileOption   = command.Option(GEOCFGFILEOPTION, "GeoDB Configfile", CommandOptionType.SingleValue);
                 var outputDirOption       = command.Option(OUTPUTDIROPTION, "OutPut DIR", CommandOptionType.SingleValue);
                 var inputDirOption        = command.Option(INPUTDIROPTION, "Input DIR", CommandOptionType.SingleValue);
-                var crawlConfigOption     = command.Option(CRAWLCONFIG, "Crawl Config File", CommandOptionType.MultipleValue); ;
+                var crawlConfigOption     = command.Option(CRAWLCONFIG, "Crawl Config File", CommandOptionType.MultipleValue);
                 
                 command.OnExecute(() =>
                 {
@@ -65,7 +65,7 @@ namespace CrawlProperties
                 var geoconfigFileOption = command.Option(GEOCFGFILEOPTION, "GeoDB Configfile", CommandOptionType.SingleValue);
                 var outputDirOption     = command.Option(OUTPUTDIROPTION, "OutPut DIR", CommandOptionType.SingleValue);
                 var inputDirOption      = command.Option(INPUTDIROPTION, "Input DIR", CommandOptionType.SingleValue);
-                var crawlConfigOption   = command.Option(CRAWLCONFIG, "Crawl Config File", CommandOptionType.MultipleValue); ;
+                var crawlConfigOption   = command.Option(CRAWLCONFIG, "Crawl Config File", CommandOptionType.MultipleValue);
 
                 command.OnExecute(() =>
                 {
@@ -88,8 +88,7 @@ namespace CrawlProperties
             {
                 Console.WriteLine($" HELP: {execName} {HELP}");
                 return 0;
-            }
-            );
+            });
 
 
             #endregion

@@ -131,11 +131,50 @@ namespace DataModels
         public string GetFilePathForPropertyData(string headDir, string dateFolderName, string jobName, string filenameSuffix)
         {
             return GetFilePathWithHeadDir(headDir, dateFolderName, jobName, PROP_DATA, filenameSuffix);
-        }
+        }        
 
         public string GetFilePathForStatsData(string headDir, string dateFolderName, string jobName, string filenameSuffix)
         {
             return GetFilePathWithHeadDir(headDir, dateFolderName, jobName, STATS_DATA, filenameSuffix);
+        }
+
+        public string GetDirForPropertyData(string headDir, string dateFolderName, string jobName)
+        {
+            return GetDirWithHeadDir(headDir, dateFolderName, jobName, PROP_DATA);
+        }
+
+        public string GetDirForStatsData(string headDir, string dateFolderName, string jobName)
+        {
+            return GetDirWithHeadDir(headDir, dateFolderName, jobName, STATS_DATA);
+        }
+
+        #region PRIVATE
+
+        private string GetDirWithHeadDir(string headDir, string dateFolderName, string subdir1, string subdir2)
+        {
+            var dir = Path.Combine(headDir, this.Parent.Name, Name, dateFolderName, subdir1, subdir2);
+            if (!Directory.Exists(dir))
+            {
+                Directory.CreateDirectory(dir);
+            }
+            return dir;
+        }
+        /// <summary>
+        /// Get Path of the file name based on the scope/file prefix.
+        /// </summary>
+        /// <param name="outDir"></param>
+        /// <param name="filePrefix"></param>
+        /// <returns></returns>
+        private string GetFilePathWithHeadDir(string headDir, string dateFolderName, string subdir1, string subdir2, string filenameSuffix)
+        {
+            var filename = $"{Name}_{filenameSuffix}";
+            //var dateFolderName = DateTime.Now.ToString("yyyy_MM_dd");
+            var dir = GetDirWithHeadDir(headDir,dateFolderName, subdir1, subdir2);
+            if (string.IsNullOrEmpty(dir) )
+            {
+                dir = ".";
+            }
+            return Path.Combine(dir, filename);
         }
 
         public string GetFilePathWithRelativeDirPath(string dirPath, string fileSuffix)
@@ -148,7 +187,7 @@ namespace DataModels
             return Path.Combine(dirPath, filename);
         }
 
-        #region PRIVATE
+      
         private const int MAX_RECORDS = 3; 
         // generate crawl confir (property or Stats.. )
         private void GenerateCrawlConfigTempl(string dir, string filename)
@@ -199,23 +238,11 @@ namespace DataModels
             }              
         }
 
-        /// <summary>
-        /// Get Path of the file name based on the scope/file prefix.
-        /// </summary>
-        /// <param name="outDir"></param>
-        /// <param name="filePrefix"></param>
-        /// <returns></returns>
-        private string GetFilePathWithHeadDir(string headDir,string dateFolderName, string subdir1, string subdir2, string filenameSuffix)
-        {
-            var filename = $"{Name}_{filenameSuffix}";
-            //var dateFolderName = DateTime.Now.ToString("yyyy_MM_dd");
-            var dir = Path.Combine(headDir, this.Parent.Name, Name, dateFolderName, subdir1, subdir2);
-            if (!Directory.Exists(dir))
-            {
-                Directory.CreateDirectory(dir);
-            }
-            return Path.Combine(dir, filename);
-        }
+        
+
+        
+
+
 
         #endregion
 
