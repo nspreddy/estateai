@@ -204,6 +204,58 @@ namespace PropAnalyzer
             return returnValue;
         }
 
+
+        public void QueuePropHTMLDU()
+        {
+            Console.WriteLine(" Queuing property HTML DU");
+            var fileSuffix = $"{ProcessorCfg.JobName}_Properties.csv";
+            var stateObject = GeoData.DefaultNation.GetState(ProcessorCfg.State);
+            var outputCSVfilePath = stateObject.GetFilePathForAnalysisData(OutDir, DateDir, ProcessorCfg.JobName, fileSuffix);
+
+            if (stateObject != null && !string.IsNullOrEmpty(outputCSVfilePath))
+            {
+                foreach (var propDU in propertyFiles2Analyze)
+                {
+                    Console.WriteLine($" Kicking off Prop DU {propDU.Value}");
+                    bool returnValue = CrawlerFramework.QueueExtractProperyDataFromHTML(propDU.Value, outputCSVfilePath);
+                    if (!returnValue)
+                    {
+                        Console.WriteLine($"Unable to Process  {propDU.Value}  append  to  {outputCSVfilePath}");
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine($"Unable to Get State Object for State:{ProcessorCfg.State}");
+            }
+        }
+
+        public void QueueStatHTMLDU()
+        {
+            Console.WriteLine(" Queuing Stat HTML DU");
+            var fileSuffix = $"{ProcessorCfg.JobName}_Stats.csv";
+            var stateObject = GeoData.DefaultNation.GetState(ProcessorCfg.State);
+            var outputCSVfilePath = stateObject.GetFilePathForAnalysisData(OutDir, DateDir, ProcessorCfg.JobName, fileSuffix);
+
+            if (stateObject != null && !string.IsNullOrEmpty(outputCSVfilePath))
+            {
+                foreach (var statDU in StatsFiles2Analyze)
+                {
+                    Console.WriteLine($" Kicking off Stats DU {statDU.Value}");
+                    bool returnValue = CrawlerFramework.QueueExtractStatsFromHTML(statDU.Value, outputCSVfilePath);
+                    if (!returnValue)
+                    {
+                        Console.WriteLine($"Unable to Process  {statDU.Value}  append  to  {outputCSVfilePath}");
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine($"Unable to Get State Object for State:{ProcessorCfg.State}");
+            }
+        }
+
+
         #region PRIVATE
 
         private void UpdateHashSetWithCountyList(List<string> counties)

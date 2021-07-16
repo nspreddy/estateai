@@ -13,6 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="..\CommonAndUtils\CommonAndUtils.csproj" />
     <ProjectReference Include="..\DataModels\DataModels.csproj" />
+    <ProjectReference Include="..\RedfinUtils\RedfinUtils.csproj" />
   </ItemGroup>
 
 </Project>

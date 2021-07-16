@@ -16,9 +16,10 @@ namespace DataModels
         public const string CITY_STATS_PREFIX = "CityStats";
         public const string ZIPCODE_STATS_PREFIX = "ZipCodeStats";
 
-        public const string META_DATA  = "MetaData";
-        public const string PROP_DATA  = "PropData";
-        public const string STATS_DATA = "StatsData";
+        public const string META_DATA     = "MetaData";
+        public const string PROP_DATA     = "PropData";
+        public const string STATS_DATA    = "StatsData";
+        public const string ANALYSIS_DATA = "AnalysisData";
 
         [JsonProperty(PropertyName = "County-Data")]
         public Dictionary<string,County> CountyList = new Dictionary<string,County>();
@@ -137,6 +138,12 @@ namespace DataModels
         {
             return GetFilePathWithHeadDir(headDir, dateFolderName, jobName, STATS_DATA, filenameSuffix);
         }
+
+        public string GetFilePathForAnalysisData(string headDir, string dateFolderName, string jobName, string filenameSuffix)
+        {
+            return GetFilePathWithHeadDir(headDir, dateFolderName, jobName, ANALYSIS_DATA, filenameSuffix);
+        }
+
 
         public string GetDirForPropertyData(string headDir, string dateFolderName, string jobName)
         {

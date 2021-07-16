@@ -107,7 +107,7 @@ namespace PropAnalyzer
                         }
                         // Wait for Crawler to finish procssing all the Jobs.
                         // Queued all the work, let us kick off Threads to do their job. 
-                        CrawlerFramework.KickoffJobAgents();
+                        CrawlerFramework.KickoffJobAgents(false);
                         // Wait for all the work to be finished by Threads.
                         CrawlerFramework.WaitForAllJobstoComplete();
                         Console.WriteLine(" All Jobs in queue processed, hence exiting");
@@ -148,6 +148,10 @@ namespace PropAnalyzer
                         var analysisHelper = new AnalysisHelper(processConfig,inputDir,date, outputDir);
                         analysisHelper.PrepListOfProperyHtmlPages2Extract();
                         analysisHelper.PrepListOfStatsHtmlPages2Extract();
+
+                        // Queue Props to process
+                        analysisHelper.QueuePropHTMLDU();
+                        analysisHelper.QueueStatHTMLDU();
                     }
                     else
                     {

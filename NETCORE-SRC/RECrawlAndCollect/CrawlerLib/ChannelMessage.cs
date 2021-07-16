@@ -8,7 +8,7 @@ namespace CrawlerLib
 {
     internal class ChannelMessage
     {
-         public enum ActionType { CRAWL_URL_SAVE2FILE, CRAWL_PROP_EXTRACT, CRAWL_STATS, CRAWL_SAVE, PROCESS_RECORD};
+         public enum ActionType { CRAWL_URL_SAVE2FILE,DU_PROPS, DU_STATS, CRAWL_URLS, PROCESS_RECORD};
         public Guid ID { get; set; }
         public  ActionType Action { get; set;}
 

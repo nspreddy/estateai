@@ -9,17 +9,31 @@ using System.Threading;
 
 namespace CrawlerLib
 {
-    public class CrawlerFramework
+    public partial class CrawlerFramework
     {
+        #region PRIVATE_MEMEBERS
+        private const int MIN_THREAD_COUNT = 5;
+        private const int INITIAL_COUNT_DOWN_COUNT = 1;
+        private const int LATENCY_MAX_BETWEEK_JOBS = 500;// in milliseconds
+        private static CountdownEvent cde = new CountdownEvent(INITIAL_COUNT_DOWN_COUNT);
 
+        private static int JobsQueued = 0;
+        private static int JobsCompletedWithSuccess = 0;
+        private static int JobsCompletedWithFailure = 0;
+        private static bool LatencyFlag = true;
+        #endregion
 
-        public static int JOBS_IN_QUEUE { get { return JobsQueued; }  }
-        public static int JOBS_PASSED { get { return JobsCompletedWithSuccess;} }
+        #region PUBLIC_MEMBERS
+        public static int JOBS_IN_QUEUE { get { return JobsQueued; } }
+        public static int JOBS_PASSED { get { return JobsCompletedWithSuccess; } }
         public static int JOBS_FAILED { get { return JobsCompletedWithFailure; } }
 
-        public static bool KickoffJobAgents(int minThreadCount= MIN_THREAD_COUNT)
+        #endregion
+
+        public static bool KickoffJobAgents(bool latencyFalg=true,int minThreadCount= MIN_THREAD_COUNT)
         {
             bool returnValue = false;
+            LatencyFlag= latencyFalg;
             try
             {
                 Console.WriteLine($"Kikcing off Message processors {minThreadCount}");
@@ -52,21 +66,24 @@ namespace CrawlerLib
             return SubmitCrawlJob(url, ChannelMessage.ActionType.CRAWL_URL_SAVE2FILE, filepath);            
         }
 
-        public static bool QueueCrawlURLsJob(string url)
+        public static bool QueueExtractProperyDataFromHTML(string fileUrl, string outputFile)
         {
-            return SubmitCrawlJob(url, ChannelMessage.ActionType.CRAWL_SAVE, null);            
+            return SubmitCrawlJob(fileUrl, ChannelMessage.ActionType.DU_PROPS, outputFile);
         }
 
-        #region PRIVATE_MEMBERS
+        public static bool QueueExtractStatsFromHTML(string fileUrl, string outputFile)
+        {
+            return SubmitCrawlJob(fileUrl, ChannelMessage.ActionType.DU_STATS, outputFile);
+        }
 
-        private const int MIN_THREAD_COUNT = 5;
-        private const int INITIAL_COUNT_DOWN_COUNT = 1;
-        private const int LATENCY_MAX_BETWEEK_JOBS = 500;// in milliseconds
-        private static CountdownEvent cde = new CountdownEvent(INITIAL_COUNT_DOWN_COUNT);
+        public static bool QueueCrawlURLsJob(string url)
+        {
+            return SubmitCrawlJob(url, ChannelMessage.ActionType.CRAWL_URLS, null);            
+        }
 
-        private static int JobsQueued = 0;
-        private static int JobsCompletedWithSuccess = 0;
-        private static int JobsCompletedWithFailure = 0;
+        #region PRIVATE_METHODS
+
+        
 
         private static bool SubmitCrawlJob(string url,ChannelMessage.ActionType action,object payload)
         { 
@@ -96,75 +113,7 @@ namespace CrawlerLib
             }
             return returnValue;
         }
-        private static void CrawlerJobAgent( object channelNameToListen)
-        {
-            string channelName = channelNameToListen as string;
-           
-            if(!string.IsNullOrEmpty(channelName))
-            {
-                bool exitFlag = false;
-                Console.WriteLine($"Starting to Listen {channelName} , Thr ID: {Thread.CurrentThread.ManagedThreadId}");
-                while (!exitFlag)
-                {
-                    var readTask = ChannelManager.ReadMessageFromChannelAsync(channelName);
 
-                    if (readTask != null)
-                    {
-                        var message = readTask.Result;
-                        if (message != null)
-                        {
-                            var returnValue= ProcessMessage(message);
-                            if (returnValue)
-                            {
-                                IncrementJobsCompletedWithSucess();
-                            }
-                            else
-                            {
-                                IncrementJobsCompletedWithFailure();
-                            }
-                            
-                            Console.WriteLine($"Job Status for Job ID: {message.ID}, Status: {returnValue}");
-                            cde.Signal();
-                            Thread.Sleep(LATENCY_MAX_BETWEEK_JOBS);
-                        }
-                        else
-                        {
-                            Console.WriteLine($"Null Message, Channel name: {channelName}");
-                        }
-                        
-                    }
-                    else
-                    {
-                        Console.WriteLine($"Unable to read from Channel {channelName}, Exiting");
-                        exitFlag = true;
-                    }
-                }
-            }
-            else
-            {
-                Console.WriteLine($"Empty Channel name, Exiting Thread { Thread.CurrentThread.ManagedThreadId}");
-            }
-        }
-
-        private static bool ProcessMessage( ChannelMessage message)
-        {
-            bool returnValue = false;
-            Console.WriteLine($"Message recieved, details: {message.Action}, URL: {message.Url}");
-            switch (message.Action)
-            {
-                case ChannelMessage.ActionType.CRAWL_PROP_EXTRACT:
-                    break;
-                case ChannelMessage.ActionType.CRAWL_URL_SAVE2FILE:
-                    returnValue = CrawlURLsAndSave2File(message);
-                    break;
-                case ChannelMessage.ActionType.CRAWL_STATS:
-                    break;                
-                case ChannelMessage.ActionType.PROCESS_RECORD:
-                    break;
-            }
-            Console.WriteLine($"Job Status: Msg ID: { message.ID}, {returnValue}");
-            return returnValue;
-        }
 
         private static void IncrementJobQueued()
         {
@@ -180,41 +129,6 @@ namespace CrawlerLib
         {
             Interlocked.Increment(ref JobsCompletedWithSuccess);            
         }
-
-
-        private static bool CrawlURLsAndSave2File(ChannelMessage message)
-        {
-            var returnValue = false;
-            var redfinUrl = message.Url;
-            var filepath = message.Payload as string;
-            if( !string.IsNullOrEmpty(redfinUrl)  && !string.IsNullOrEmpty(filepath))
-            {
-                var crawler = new Crawler();
-                returnValue = crawler.CrawlUrlAndSavePayload(redfinUrl, filepath);
-            }
-            else
-            {
-                Console.WriteLine($" Message key params missing. url:{redfinUrl} , payload : { filepath}");
-            }
-            return returnValue;
-        }
-
-        private static bool CrawlURLsAndSaveContent(ChannelMessage message)
-        {
-            var returnValue = false;
-            var url = message.Url;
-            if (!string.IsNullOrEmpty(url) )
-            {
-                var crawler = new Crawler();
-                returnValue = crawler.CrawlUrl(url);
-            }
-            else
-            {
-                Console.WriteLine($" Message key params missing. url:{url} ");
-            }
-            return returnValue;
-        }
-
         #endregion
 
 
