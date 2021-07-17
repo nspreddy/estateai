@@ -111,7 +111,7 @@ namespace CommonAndUtils
             return Doc;
         }
 
-        public static HtmlDocument GethtmlDocFromXmlFile( string filepath)
+        public static HtmlDocument GethtmlDocFromXmlOrHtmlFile( string filepath)
         {
             HtmlDocument Doc = null;
 

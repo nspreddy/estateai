@@ -2,7 +2,7 @@
   "profiles": {
     "CrawlProperties": {
       "commandName": "Project",
-      "commandLineArgs": "props -g geoDB.json -c CrawlConfig_Tmpl_WA.json -i MetaData -d testDir",
+      "commandLineArgs": "stats -g geoDB.json -c CrawlConfig_Tmpl_WA.json -i MetaData -d testDir",
       "sqlDebugging": true
     }
   }

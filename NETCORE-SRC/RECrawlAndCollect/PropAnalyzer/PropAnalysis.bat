@@ -1,0 +1,1 @@
+PropAnalyzer.exe -g geoDB.json -p ProcessConfig_Tmpl_WA.json -i testDir -o outDir1 

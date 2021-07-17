@@ -28,7 +28,8 @@ namespace DataModels
 
         #region BASIC_PROP_DATA
         public string PropertyType { get; private set; } // Single Family, Condo, Town Home
-        public int Beds { get; private set; }
+        public string Beds { get; set; }
+        public string Baths { get; set; }
         public double FullBaths { get; private set; }
         public double HalfBaths { get; private set; }
         public double ThreeBy4Baths { get; private set; }
@@ -36,7 +37,7 @@ namespace DataModels
         public int DedicatedParkingSpots { get; private set; }
         public int SharedParkingSpots { get; private set; }
 
-        public int Sqft { get; private set; }
+        public string Sqft { get;  set; }
         public int LotSizeinSqft { get; private set; }
 
         public int YearBuilt { get; private set; }
@@ -49,7 +50,7 @@ namespace DataModels
         #endregion
 
         #region PRICE_MARKET_DURATION
-        public double Price { get; private set; }
+        public string Price { get; set; }
         public double EstimatePrice { get; private set;}
         public double HOA { get; private set; }
         public int timeonMarketinDays { get; private set; }

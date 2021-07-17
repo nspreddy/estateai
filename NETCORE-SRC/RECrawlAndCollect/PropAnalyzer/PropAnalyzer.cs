@@ -75,7 +75,15 @@ namespace PropAnalyzer
                 Console.WriteLine($" HELP: {execName} {HELP}");
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="geoConfigFile"></param>
+        /// <param name="dirToReadHtmlFiles"></param>
+        /// <param name="processConfigFiles"></param>
+        /// <param name="dateInput"></param>
+        /// <param name="dirToSave"></param>
+        /// <returns></returns>
         private static int AnalyzeData(string geoConfigFile, string dirToReadHtmlFiles, List<string> processConfigFiles, string dateInput, string dirToSave)
         {
             int returnValue = -1;
@@ -130,7 +138,14 @@ namespace PropAnalyzer
             return returnValue;
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="configFile"></param>
+        /// <param name="inputDir"></param>
+        /// <param name="date"></param>
+        /// <param name="outputDir"></param>
+        /// <returns></returns>
         private static bool ProcessConfigAndStartAnalyzing(string configFile, string inputDir, string date, string outputDir)
         {
             bool returnValue = false;

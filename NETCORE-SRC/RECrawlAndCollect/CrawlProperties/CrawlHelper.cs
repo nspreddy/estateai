@@ -404,7 +404,7 @@ namespace CrawlProperties
 
             try
             {
-                var xmlDoc = CrawlUtils.GethtmlDocFromXmlFile(xmlFilenameWithURLs);
+                var xmlDoc = CrawlUtils.GethtmlDocFromXmlOrHtmlFile(xmlFilenameWithURLs);
                 if (xmlDoc != null)
                 {
                     // Let us get list of URLs
