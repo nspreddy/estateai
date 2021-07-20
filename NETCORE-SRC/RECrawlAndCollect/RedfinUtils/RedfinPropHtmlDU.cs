@@ -46,6 +46,9 @@ namespace RedfinUtils
                 extractHomePriceBedsAndBaths();
                 extractHomeFacts();
                 extractPublicFacts();
+                extractWalkTransitAndBicycleScores();
+                extractCScore();
+                extractRentEstimate();
                 returnValue = true;
             }
             return returnValue;
@@ -99,7 +102,7 @@ namespace RedfinUtils
 
         private void  extractPublicFacts()
         {
-            var keys = extractMultipleValues(XPATH_PUBLIC_FACTS_KEYS);
+            var keys   = extractMultipleValues(XPATH_PUBLIC_FACTS_KEYS);
             var values = extractMultipleValues(XPATH_PUBLIC_FACTS_VALUES);
 
             int i = 0;
@@ -109,6 +112,33 @@ namespace RedfinUtils
             }
 
         }
+                
+        private const string XPATH_WALK_SCORE_XPATH    = "//div[@class='transport-icon-and-percentage walkscore']/div[@data-rf-test-name='ws-percentage']/span[@class='value poor']";
+        private const string XPATH_TRANSIT_SCORE_XPATH = "//div[@class='transport-icon-and-percentage transitscore']/div[@data-rf-test-name='ws-percentage']/span[@class='value poor']";
+        private const string XPATH_BICYCLE_SCORE_XPATH = "//div[@class='transport-icon-and-percentage bikescore']/div[@data-rf-test-name='ws-percentage']/span[@class='value poor']";
+
+        private void extractWalkTransitAndBicycleScores()
+        {
+            var walkScore     = extractSingleValue(XPATH_WALK_SCORE_XPATH);
+            var transitScore  = extractSingleValue(XPATH_TRANSIT_SCORE_XPATH);
+            var biCycleScore  = extractSingleValue(XPATH_BICYCLE_SCORE_XPATH);
+        }
+
+        private const string XPATH_CSCORE_XPATH = "//div[@class='score most']";
+
+        private void extractCScore()
+        {
+            var cscore = extractSingleValue(XPATH_CSCORE_XPATH);
+        }
+
+        private const string XPATH_RENT_EST_XPATH = "//div[@class='rentalEstimateStats']/div/span";
+
+        private void extractRentEstimate()
+        {
+            var cscore = extractSingleValue(XPATH_RENT_EST_XPATH);
+        }
+
+
 
 
         // utiltiy funtions
